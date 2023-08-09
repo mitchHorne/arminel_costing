@@ -17,7 +17,7 @@ function App () {
 
   return (
     <div className='container'>
-      <h1>Welcome to Tauri!</h1>
+      <h1>Arminel costing</h1>
     </div>
   )
 }

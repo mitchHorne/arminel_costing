@@ -9,7 +9,7 @@ import { basePrices } from './prices'
 
 const createDataFolder = async (): Promise<void> => {
   await createDir('data', {
-    dir: BaseDirectory.Desktop,
+    dir: BaseDirectory.AppData,
     recursive: true
   })
 }
@@ -21,7 +21,7 @@ const createDataFile = async (fileName: string): Promise<void> => {
       path: fileName
     },
     {
-      dir: BaseDirectory.Desktop
+      dir: BaseDirectory.AppData
     }
   )
 }
@@ -29,7 +29,7 @@ const createDataFile = async (fileName: string): Promise<void> => {
 export const createBaseFolder = async (): Promise<object> => {
   const dataFileName = 'data/prices.json'
   const baseFileExists = await exists(dataFileName, {
-    dir: BaseDirectory.Desktop
+    dir: BaseDirectory.AppData
   })
 
   if (!baseFileExists) {
@@ -43,7 +43,7 @@ export const createBaseFolder = async (): Promise<object> => {
 
   try {
     const jsonText = await readTextFile(dataFileName, {
-      dir: BaseDirectory.Desktop
+      dir: BaseDirectory.AppData
     })
     return JSON.parse(jsonText)
   } catch (e: any) {
