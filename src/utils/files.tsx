@@ -26,7 +26,12 @@ const createDataFile = async (fileName: string): Promise<void> => {
   )
 }
 
-export const createBaseFolder = async (): Promise<object> => {
+interface CreateBaseFolderReturn {
+  data: object
+  configured: boolean
+}
+
+export const createBaseFolder = async (): Promise<CreateBaseFolderReturn> => {
   const dataFileName = 'data/prices.json'
   const baseFileExists = await exists(dataFileName, {
     dir: BaseDirectory.AppData
@@ -45,9 +50,9 @@ export const createBaseFolder = async (): Promise<object> => {
     const jsonText = await readTextFile(dataFileName, {
       dir: BaseDirectory.AppData
     })
-    return JSON.parse(jsonText)
+    return { data: JSON.parse(jsonText), configured: baseFileExists }
   } catch (e: any) {
     console.error(e)
-    return {}
+    return { data: {}, configured: false }
   }
 }

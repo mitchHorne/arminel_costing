@@ -1,4 +1,4 @@
-import { Routes, Route, Link, useLocation } from 'react-router-dom'
+import { Routes, Route, Link, Navigate, useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Home, Config, CrateCosting } from '../pages'
@@ -36,11 +36,17 @@ const StyledLink = styled(Link)<StyledLinkProps>`
 
 function App (): JSX.Element {
   const [prices, setPrices] = useState({})
+  const [configured, setConfigured] = useState(true)
 
   useEffect(() => {
     async function getData () {
-      const fileData = await createBaseFolder()
+      const { data: fileData, configured } = await createBaseFolder()
       setPrices(fileData)
+
+      if (!configured) {
+        console.log('Not configured - proceeding to configuration page')
+        setConfigured(false)
+      }
     }
 
     getData().catch(e => console.error(e))
@@ -49,6 +55,7 @@ function App (): JSX.Element {
   const { pathname } = useLocation()
 
   function isCurrentRoute (path: string): boolean {
+    if (!pathname) return false
     return pathname === path
   }
 
@@ -69,7 +76,10 @@ function App (): JSX.Element {
         </StyledLink>
       </NavBar>
       <Routes>
-        <Route path='/' element={<Home />} />
+        <Route
+          path='/'
+          element={!configured ? <Navigate to='/config' /> : <Home />}
+        />
         <Route path='/config' element={<Config />} />
         <Route path='/crate-costing' element={<CrateCosting />} />
       </Routes>
