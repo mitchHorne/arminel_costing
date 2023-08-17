@@ -8,23 +8,13 @@ import {
 import { basePrices } from './prices'
 import { Prices, initialPrices } from '../store/prices'
 
+const dataFileName = 'data/prices.json'
+
 const createDataFolder = async (): Promise<void> => {
   await createDir('data', {
     dir: BaseDirectory.AppData,
     recursive: true
   })
-}
-
-const createDataFile = async (fileName: string): Promise<void> => {
-  await writeFile(
-    {
-      contents: JSON.stringify(basePrices),
-      path: fileName
-    },
-    {
-      dir: BaseDirectory.AppData
-    }
-  )
 }
 
 interface CreateBaseFolderReturn {
@@ -33,7 +23,6 @@ interface CreateBaseFolderReturn {
 }
 
 export const createBaseFolder = async (): Promise<CreateBaseFolderReturn> => {
-  const dataFileName = 'data/prices.json'
   const baseFileExists = await exists(dataFileName, {
     dir: BaseDirectory.AppData
   })
@@ -41,7 +30,7 @@ export const createBaseFolder = async (): Promise<CreateBaseFolderReturn> => {
   if (!baseFileExists) {
     try {
       await createDataFolder()
-      await createDataFile(dataFileName)
+      await saveData(basePrices)
     } catch (e: any) {
       console.error(e)
     }
@@ -56,4 +45,16 @@ export const createBaseFolder = async (): Promise<CreateBaseFolderReturn> => {
     console.error(e)
     return { data: initialPrices, configured: false }
   }
+}
+
+export const saveData = async (prices: Prices): Promise<void> => {
+  await writeFile(
+    {
+      contents: JSON.stringify(prices),
+      path: dataFileName
+    },
+    {
+      dir: BaseDirectory.AppData
+    }
+  )
 }

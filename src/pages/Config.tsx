@@ -1,8 +1,10 @@
-import { BaseDirectory, removeFile } from '@tauri-apps/api/fs'
 import { useSelector } from 'react-redux'
-import { useState, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { useState } from 'react'
 import styled from 'styled-components'
 import { Button } from '../components'
+import { saveData } from '../utils/files'
+import { setPrices } from '../store/prices'
 
 const ControlContainer = styled.div`
   display: flex;
@@ -26,6 +28,7 @@ const ContentContainer = styled.div`
     }
   }
 `
+
 const PriceCategory = styled.div`
   display: flex;
   flex-direction: row;
@@ -50,20 +53,13 @@ const PriceCategory = styled.div`
   }
 `
 
-interface PriceCategory {
-  '19x76': Number
-  '19x114': Number
-  '25x76': Number
-  '25x114': Number
-  '38x114': Number
-  '50x76': Number
-  '76x102': Number
-  '76x228': Number
+interface PriceCategoryType {
+  [key: string]: Number
 }
 
-const renderPrices = (priceCategory: PriceCategory): JSX.Element => {
+const renderPrices = (priceCategory: PriceCategoryType): JSX.Element => {
   const categories: Array<String> = []
-  const prices: Array<String> = []
+  const prices: Array<Number> = []
   for (const [key, value] of Object.entries(priceCategory)) {
     categories.push(key)
     prices.push(value)
@@ -80,18 +76,112 @@ const renderPrices = (priceCategory: PriceCategory): JSX.Element => {
       <div>
         <h4>- Price per m³</h4>
         {prices.map(value => (
-          <p>- R {value}</p>
+          <p>- R {`${value}`}</p>
         ))}
       </div>
     </PriceCategory>
   )
 }
 
+const PriceCategoryConfig = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`
+
+const PriceCategoryConfigItem = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 0.5rem;
+
+  h4 {
+    display: inline-block;
+    margin: 0;
+  }
+`
+
+const StyledInput = styled.input`
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 0.25rem;
+  transition: all 0.3s;
+
+  &:focus {
+    border: 1px solid #ccc;
+    box-shadow: 0 0 5px #000080;
+    outline: none;
+  }
+`
+
+const renderConfigPrices = (
+  priceCategory: PriceCategoryType,
+  chageConfiguration: Function,
+  type: 'kilmDry' | 'wetOffSaw'
+): JSX.Element => {
+  const categories: Array<String> = Object.keys(priceCategory)
+
+  const priceCategoryComponents = categories.map(
+    (category: String): JSX.Element => {
+      return (
+        <PriceCategoryConfigItem>
+          <h4>{category}</h4>
+          <StyledInput
+            onChange={e => chageConfiguration(category, e.target.value, type)}
+            onClick={e => {
+              const target = e.target as HTMLInputElement
+              target.select()
+            }}
+            type='text'
+            value={priceCategory[category]}
+          />
+        </PriceCategoryConfigItem>
+      )
+    }
+  )
+
+  return <PriceCategoryConfig>{priceCategoryComponents}</PriceCategoryConfig>
+}
+
 export const Config = (): JSX.Element => {
   const [activeData, setActiveData] = useState(
     useSelector((state: any) => state.prices)
   )
+  const [configData, setConfigData] = useState(activeData)
   const [configuring, setConfiguring] = useState(false)
+
+  const chageConfiguration = (
+    key: string,
+    value: Number,
+    category: 'kilmDry' | 'wetOffSaw'
+  ): void => {
+    const numberVal = Number(value)
+    if (Number.isNaN(numberVal)) return
+
+    let newData
+    if (category === 'kilmDry') {
+      const kilmDry = { ...configData.kilmDry, [key]: numberVal }
+      newData = { ...configData, kilmDry: kilmDry }
+    } else {
+      const wetOffSaw = { ...configData.wetOffSaw, [key]: numberVal }
+      newData = { ...configData, wetOffSaw: wetOffSaw }
+    }
+
+    setConfigData(newData)
+  }
+
+  const dispatch = useDispatch()
+
+  const saveConfigData = async (): Promise<void> => {
+    try {
+      await saveData(configData)
+      dispatch(setPrices(configData))
+      setActiveData(configData)
+      setConfiguring(false)
+    } catch (err) {
+      console.error(err)
+    }
+  }
 
   return (
     <div>
@@ -99,9 +189,27 @@ export const Config = (): JSX.Element => {
         <div>
           <h1>Configure prices</h1>
           <ControlContainer>
-            <Button onClick={() => setConfiguring(false)}>Cancel</Button>
-            <Button onClick={() => setConfiguring(false)}>Save</Button>
+            <Button onClick={() => setConfiguring(false)}>Back</Button>
+            <Button onClick={() => saveConfigData()}>Save</Button>
           </ControlContainer>
+          <ContentContainer>
+            <div>
+              <h3>Kilm Dry</h3>
+              {renderConfigPrices(
+                configData.kilmDry,
+                chageConfiguration,
+                'kilmDry'
+              )}
+            </div>
+            <div>
+              <h3>Wet OffSaw</h3>
+              {renderConfigPrices(
+                configData.wetOffSaw,
+                chageConfiguration,
+                'wetOffSaw'
+              )}
+            </div>
+          </ContentContainer>
         </div>
       ) : (
         <div>

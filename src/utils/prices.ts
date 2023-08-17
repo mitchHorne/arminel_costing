@@ -1,3 +1,5 @@
+import { Prices } from '../store/prices'
+
 interface Sizes {
   '19x76': Number
   '19x114': Number
@@ -7,11 +9,6 @@ interface Sizes {
   '50x76': Number
   '76x102': Number
   '76x228': Number
-}
-
-export interface Prices {
-  kilmDry: Sizes
-  wetOffSaw: Sizes
 }
 
 const sizes: Sizes = {

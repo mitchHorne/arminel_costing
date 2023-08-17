@@ -2,7 +2,7 @@ import { Routes, Route, Link, Navigate, useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { setInitialPrices } from '../store/prices'
+import { setPrices } from '../store/prices'
 import { Home, Config, CrateCosting } from '../pages'
 
 import { createBaseFolder } from '../utils/files'
@@ -43,7 +43,7 @@ function App (): JSX.Element {
   useEffect(() => {
     async function getData () {
       const { data: fileData, configured } = await createBaseFolder()
-      dispatch(setInitialPrices(fileData))
+      dispatch(setPrices(fileData))
 
       if (!configured) {
         console.log('Not configured - proceeding to configuration page')

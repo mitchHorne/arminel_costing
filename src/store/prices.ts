@@ -1,26 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 export interface Prices {
-  kilmDry: {
-    '19x76': Number
-    '19x114': Number
-    '25x76': Number
-    '25x114': Number
-    '38x114': Number
-    '50x76': Number
-    '76x102': Number
-    '76x228': Number
-  }
-  wetOffSaw: {
-    '19x76': Number
-    '19x114': Number
-    '25x76': Number
-    '25x114': Number
-    '38x114': Number
-    '50x76': Number
-    '76x102': Number
-    '76x228': Number
-  }
+  kilmDry: { [key: string]: Number }
+  wetOffSaw: { [key: string]: Number }
 }
 
 export const initialPrices: Prices = {
@@ -46,7 +28,7 @@ export const initialPrices: Prices = {
   }
 }
 
-interface setInitialPricesAction {
+interface setPricesAction {
   payload: Prices
 }
 
@@ -70,17 +52,13 @@ export const pricesSlice = createSlice({
   name: 'prices',
   initialState: initialPrices,
   reducers: {
-    setInitialPrices: (state: Prices, action: setInitialPricesAction) => {
+    setPrices: (state: Prices, action: setPricesAction) => {
       state = action.payload
-    },
-    updatePrice: (state: Prices, action: priceUpdateAction) => {
-      const { type, size, price } = action.payload
-      state[type][size] = price
     }
   }
 })
 
 // Action creators are generated for each case reducer function
-export const { setInitialPrices, updatePrice } = pricesSlice.actions
+export const { setPrices } = pricesSlice.actions
 
 export default pricesSlice.reducer
