@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { setPrices } from '../store/prices'
-import { Home, Config, CrateCosting } from '../pages'
+import { CrateCosting, Config } from '../pages'
 
 import { createBaseFolder } from '../utils/files'
 
@@ -65,25 +65,18 @@ function App (): JSX.Element {
     <div className='container'>
       <NavBar>
         <StyledLink active={isCurrentRoute('/')} to='/'>
-          Home
+          Crate Costing
         </StyledLink>
         <StyledLink active={isCurrentRoute('/config')} to='/config'>
           Config
-        </StyledLink>
-        <StyledLink
-          active={isCurrentRoute('/crate-costing')}
-          to='/crate-costing'
-        >
-          Crate Costing
         </StyledLink>
       </NavBar>
       <Routes>
         <Route
           path='/'
-          element={!configured ? <Navigate to='/config' /> : <Home />}
+          element={!configured ? <Navigate to='/config' /> : <CrateCosting />}
         />
         <Route path='/config' element={<Config />} />
-        <Route path='/crate-costing' element={<CrateCosting />} />
       </Routes>
     </div>
   )

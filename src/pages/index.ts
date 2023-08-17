@@ -1,5 +1,4 @@
-import { Home } from './Home'
-import { Config } from './Config'
 import { CrateCosting } from './CrateCosting'
+import { Config } from './Config'
 
-export { Home, Config, CrateCosting }
+export { CrateCosting, Config }
