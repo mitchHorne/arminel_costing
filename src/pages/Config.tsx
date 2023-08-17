@@ -74,9 +74,9 @@ const renderPrices = (priceCategory: PriceCategoryType): JSX.Element => {
         ))}
       </div>
       <div>
-        <h4>- Price per m³</h4>
+        <h4>Price per m³</h4>
         {prices.map(value => (
-          <p>- R {`${value}`}</p>
+          <p>R {`${value}`}</p>
         ))}
       </div>
     </PriceCategory>
