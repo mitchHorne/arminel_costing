@@ -3,6 +3,8 @@ import { createSlice } from '@reduxjs/toolkit'
 export interface Prices {
   kilmDry: { [key: string]: Number }
   wetOffSaw: { [key: string]: Number }
+  nails: Number
+  labor: Number
 }
 
 export const initialPrices: Prices = {
@@ -25,7 +27,9 @@ export const initialPrices: Prices = {
     '50x76': 0,
     '76x102': 0,
     '76x228': 0
-  }
+  },
+  nails: 0,
+  labor: 0
 }
 
 interface setPricesAction {

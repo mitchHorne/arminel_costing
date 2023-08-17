@@ -24,5 +24,7 @@ const sizes: Sizes = {
 
 export const basePrices: Prices = {
   kilmDry: { ...sizes },
-  wetOffSaw: { ...sizes }
+  wetOffSaw: { ...sizes },
+  nails: 0,
+  labor: 0
 }

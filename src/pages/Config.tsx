@@ -152,7 +152,7 @@ export const Config = (): JSX.Element => {
 
   const chageConfiguration = (
     key: string,
-    value: Number,
+    value: String,
     category: 'kilmDry' | 'wetOffSaw'
   ): void => {
     const numberVal = Number(value)
@@ -166,6 +166,24 @@ export const Config = (): JSX.Element => {
       const wetOffSaw = { ...configData.wetOffSaw, [key]: numberVal }
       newData = { ...configData, wetOffSaw: wetOffSaw }
     }
+
+    setConfigData(newData)
+  }
+
+  const changeConfigNails = (value: String): void => {
+    const numberVal = Number(value)
+    if (Number.isNaN(numberVal)) return
+
+    const newData = { ...configData, nails: numberVal }
+
+    setConfigData(newData)
+  }
+
+  const changeConfigLabor = (value: String): void => {
+    const numberVal = Number(value)
+    if (Number.isNaN(numberVal)) return
+
+    const newData = { ...configData, labor: numberVal }
 
     setConfigData(newData)
   }
@@ -209,6 +227,33 @@ export const Config = (): JSX.Element => {
                 'wetOffSaw'
               )}
             </div>
+            <div>
+              <h3>Misc</h3>
+              <PriceCategoryConfigItem>
+                <h4>Nails</h4>
+                <StyledInput
+                  onChange={e => changeConfigNails(e.target.value)}
+                  onClick={e => {
+                    const target = e.target as HTMLInputElement
+                    target.select()
+                  }}
+                  type='text'
+                  value={configData.nails}
+                />
+              </PriceCategoryConfigItem>
+              <PriceCategoryConfigItem>
+                <h4>Labor</h4>
+                <StyledInput
+                  onChange={e => changeConfigLabor(e.target.value)}
+                  onClick={e => {
+                    const target = e.target as HTMLInputElement
+                    target.select()
+                  }}
+                  type='text'
+                  value={configData.labor}
+                />
+              </PriceCategoryConfigItem>
+            </div>
           </ContentContainer>
         </div>
       ) : (
@@ -223,6 +268,25 @@ export const Config = (): JSX.Element => {
             <div>
               <h3>Wet OffSaw</h3>
               {renderPrices(activeData.wetOffSaw)}
+            </div>
+            <div>
+              <h3>Misc</h3>
+              <PriceCategory>
+                <div>
+                  <p>Nails</p>
+                </div>
+                <div>
+                  <p>R {`${activeData.nails}`}</p>
+                </div>
+              </PriceCategory>
+              <PriceCategory>
+                <div>
+                  <p>Labor</p>
+                </div>
+                <div>
+                  <p>R {`${activeData.labor}`}</p>
+                </div>
+              </PriceCategory>
             </div>
           </ContentContainer>
         </div>
