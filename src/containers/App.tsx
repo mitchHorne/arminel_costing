@@ -1,6 +1,8 @@
 import { Routes, Route, Link, Navigate, useLocation } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
+import { setInitialPrices } from '../store/prices'
 import { Home, Config, CrateCosting } from '../pages'
 
 import { createBaseFolder } from '../utils/files'
@@ -21,7 +23,7 @@ interface StyledLinkProps {
 }
 
 const StyledLink = styled(Link)<StyledLinkProps>`
-  background: ${props => (props.active ? '#008080' : '#ccc')};
+  background: ${props => (props.active ? '#000080' : '#ccc')};
   color: ${props => (props.active ? '#fff' : '#333')};
   cursor: pointer;
   padding: 0.5rem 1rem;
@@ -29,19 +31,19 @@ const StyledLink = styled(Link)<StyledLinkProps>`
   text-decoration: none;
 
   &:hover {
-    background: #008080;
+    background: #000080;
     color: #fff;
   }
 `
 
 function App (): JSX.Element {
-  const [prices, setPrices] = useState({})
   const [configured, setConfigured] = useState(true)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     async function getData () {
       const { data: fileData, configured } = await createBaseFolder()
-      setPrices(fileData)
+      dispatch(setInitialPrices(fileData))
 
       if (!configured) {
         console.log('Not configured - proceeding to configuration page')

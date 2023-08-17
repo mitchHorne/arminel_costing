@@ -6,6 +6,7 @@ import {
   writeFile
 } from '@tauri-apps/api/fs'
 import { basePrices } from './prices'
+import { Prices, initialPrices } from '../store/prices'
 
 const createDataFolder = async (): Promise<void> => {
   await createDir('data', {
@@ -27,7 +28,7 @@ const createDataFile = async (fileName: string): Promise<void> => {
 }
 
 interface CreateBaseFolderReturn {
-  data: object
+  data: Prices
   configured: boolean
 }
 
@@ -53,6 +54,6 @@ export const createBaseFolder = async (): Promise<CreateBaseFolderReturn> => {
     return { data: JSON.parse(jsonText), configured: baseFileExists }
   } catch (e: any) {
     console.error(e)
-    return { data: {}, configured: false }
+    return { data: initialPrices, configured: false }
   }
 }

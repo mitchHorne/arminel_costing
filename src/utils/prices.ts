@@ -1,5 +1,5 @@
 interface Sizes {
-  '9x76': Number
+  '19x76': Number
   '19x114': Number
   '25x76': Number
   '25x114': Number
@@ -15,7 +15,7 @@ export interface Prices {
 }
 
 const sizes: Sizes = {
-  '9x76': 0,
+  '19x76': 0,
   '19x114': 0,
   '25x76': 0,
   '25x114': 0,
