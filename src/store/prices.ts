@@ -52,9 +52,8 @@ export const pricesSlice = createSlice({
   name: 'prices',
   initialState: initialPrices,
   reducers: {
-    setPrices: (state: Prices, action: setPricesAction) => {
-      state = action.payload
-    }
+    setPrices: (state: Prices, action: setPricesAction) =>
+      (state = action.payload)
   }
 })
 
