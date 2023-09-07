@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
+import * as R from 'ramda'
 
 import { constingsTypes, containerTypes, woodTypes } from '../constants'
 import { Button, CostingChoiceButton } from '../components'
@@ -16,6 +17,39 @@ const ContentContainer = styled.div`
     gap: 0.5rem;
   `
       : `justify-content: center;`}
+`
+
+const InputContainer = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+`
+
+const InputRow = styled.div`
+  align-items: center;
+  display: flex;
+  padding: 0.5rem;
+  justify-content: space-between;
+  width: 30%;
+
+  h3 {
+    margin: 0;
+    padding: 0;
+  }
+`
+
+const StyledInput = styled.input`
+  border: 1px solid #333;
+  border-radius: 10px;
+  margin: 0;
+  padding: 0.5rem 0.5rem;
+  transition: all 0.3s;
+
+  &:focus {
+    border: 1px solid #000060;
+    box-shadow: 0 0 3px 1px #000060;
+    outline: none;
+  }
 `
 
 const CostingTypeChoice = ({ chooseType }: { chooseType: Function }) => {
@@ -82,6 +116,12 @@ export const CrateCosting = (): JSX.Element => {
   const [woodType, setWoodType] = useState('')
   const [inContainer, setInContainer] = useState(false)
   const [containerType, setContainerType] = useState('')
+  const [innerDimensions, setInnerDimensions] = useState({
+    length: 0,
+    width: 0,
+    height: 0,
+    err: ''
+  })
 
   const chooseCostingType = (choice: string) => {
     setCostingType(choice)
@@ -122,6 +162,44 @@ export const CrateCosting = (): JSX.Element => {
     setStep(3)
   }
 
+  const setDimensions = (
+    dimension: 'length' | 'width' | 'height',
+    value: string
+  ) => {
+    const newDimensions = { ...innerDimensions }
+
+    if (isNaN(Number(value))) {
+      newDimensions.err = 'Only numbers are allowed'
+      return setInnerDimensions(newDimensions)
+    }
+
+    if (dimension === 'length') {
+      newDimensions.length = Number(value)
+    } else if (dimension === 'width') {
+      newDimensions.width = Number(value)
+    } else if (dimension === 'height') {
+      newDimensions.height = Number(value)
+    }
+
+    newDimensions.err = ''
+    setInnerDimensions(newDimensions)
+  }
+
+  const finaliseDimensions = () => {
+    const onlyDimensions = R.omit(['err'], innerDimensions)
+    const allValuesValid = R.values(onlyDimensions).every(
+      (value: number) => value > 0
+    )
+
+    if (!allValuesValid) {
+      const newDimensions = { ...innerDimensions }
+      newDimensions.err = 'All dimensions must be greater than 0'
+      return setInnerDimensions(newDimensions)
+    }
+
+    setStep(4)
+  }
+
   return (
     <div>
       {step === 0 && <CostingTypeChoice chooseType={chooseCostingType} />}
@@ -150,6 +228,53 @@ export const CrateCosting = (): JSX.Element => {
           question='What container spec is it going into?'
           choices={containerTypeChoices}
         />
+      )}
+      {step === 3 && (
+        <>
+          <h2>Please specify inner dimensions in cm</h2>
+          <InputContainer>
+            <InputRow>
+              <h3>Length</h3>
+              <StyledInput
+                onChange={e => setDimensions('length', e.target.value)}
+                onClick={e => {
+                  const target = e.target as HTMLInputElement
+                  e.target.select()
+                }}
+                type='text'
+                value={innerDimensions.length}
+              />
+            </InputRow>
+            <InputRow>
+              <h3>Width</h3>
+              <StyledInput
+                onChange={e => setDimensions('width', e.target.value)}
+                onClick={e => {
+                  const target = e.target as HTMLInputElement
+                  e.target.select()
+                }}
+                type='text'
+                value={innerDimensions.width}
+              />
+            </InputRow>
+            <InputRow>
+              <h3>Height</h3>
+              <StyledInput
+                onChange={e => setDimensions('height', e.target.value)}
+                onClick={e => {
+                  const target = e.target as HTMLInputElement
+                  e.target.select()
+                }}
+                type='text'
+                value={innerDimensions.height}
+              />
+            </InputRow>
+            {innerDimensions.err && (
+              <p style={{ color: 'red' }}>{innerDimensions.err}</p>
+            )}
+            <Button onClick={finaliseDimensions}>Set Dimensions</Button>
+          </InputContainer>
+        </>
       )}
     </div>
   )
