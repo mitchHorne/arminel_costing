@@ -35,6 +35,12 @@ const InputRow = styled.div`
   h3 {
     margin: 0;
     padding: 0;
+    padding-right: 0.5em;
+  }
+
+  p {
+    margin: 0;
+    padding: 0;
   }
 `
 
@@ -122,6 +128,10 @@ export const CrateCosting = (): JSX.Element => {
     height: 0,
     err: ''
   })
+  const [carryingCapacity, setCarryingCapacity] = useState({
+    value: 0,
+    err: ''
+  })
 
   const chooseCostingType = (choice: string) => {
     setCostingType(choice)
@@ -200,6 +210,31 @@ export const CrateCosting = (): JSX.Element => {
     setStep(4)
   }
 
+  const setCarryCap = (value: string) => {
+    const newCarryCapacity = { ...carryingCapacity }
+
+    if (isNaN(Number(value))) {
+      newCarryCapacity.err = 'Only numbers are allowed'
+      return setCarryingCapacity(newCarryCapacity)
+    }
+
+    newCarryCapacity.value = Number(value)
+    newCarryCapacity.err = ''
+    setCarryingCapacity(newCarryCapacity)
+  }
+
+  const finaliseCarryCapacity = () => {
+    const carryCapacityValid = carryingCapacity.value > 0
+
+    if (!carryCapacityValid) {
+      const newCarryCapacity = { ...carryingCapacity }
+      newCarryCapacity.err = 'All dimensions must be greater than 0'
+      return setCarryingCapacity(newCarryCapacity)
+    }
+
+    setStep(5)
+  }
+
   return (
     <div>
       {step === 0 && <CostingTypeChoice chooseType={chooseCostingType} />}
@@ -239,7 +274,7 @@ export const CrateCosting = (): JSX.Element => {
                 onChange={e => setDimensions('length', e.target.value)}
                 onClick={e => {
                   const target = e.target as HTMLInputElement
-                  e.target.select()
+                  target.select()
                 }}
                 type='text'
                 value={innerDimensions.length}
@@ -251,7 +286,7 @@ export const CrateCosting = (): JSX.Element => {
                 onChange={e => setDimensions('width', e.target.value)}
                 onClick={e => {
                   const target = e.target as HTMLInputElement
-                  e.target.select()
+                  target.select()
                 }}
                 type='text'
                 value={innerDimensions.width}
@@ -263,7 +298,7 @@ export const CrateCosting = (): JSX.Element => {
                 onChange={e => setDimensions('height', e.target.value)}
                 onClick={e => {
                   const target = e.target as HTMLInputElement
-                  e.target.select()
+                  target.select()
                 }}
                 type='text'
                 value={innerDimensions.height}
@@ -273,6 +308,32 @@ export const CrateCosting = (): JSX.Element => {
               <p style={{ color: 'red' }}>{innerDimensions.err}</p>
             )}
             <Button onClick={finaliseDimensions}>Set Dimensions</Button>
+          </InputContainer>
+        </>
+      )}
+
+      {step === 4 && (
+        <>
+          <h2>Please specify carrying capacity in kg</h2>
+          <InputContainer>
+            <InputRow>
+              <h3>Capacity</h3>
+              <StyledInput
+                onChange={e => setCarryCap(e.target.value)}
+                onClick={e => {
+                  const target = e.target as HTMLInputElement
+                  target.select()
+                }}
+                type='text'
+                value={carryingCapacity.value}
+              />
+            </InputRow>
+            {carryingCapacity.err && (
+              <p style={{ color: 'red' }}>{carryingCapacity.err}</p>
+            )}
+            <Button onClick={finaliseCarryCapacity}>
+              Set Carrying Capacity
+            </Button>
           </InputContainer>
         </>
       )}
