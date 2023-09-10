@@ -3,7 +3,15 @@ import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import * as R from 'ramda'
 
-import { constingsTypes, containerTypes, woodTypes } from '../constants'
+import Dropdown from 'react-dropdown'
+import 'react-dropdown/style.css'
+
+import {
+  constingsTypes,
+  containerTypes,
+  woodSizes,
+  woodTypes
+} from '../constants'
 import { Button, CostingChoiceButton } from '../components'
 
 const ContentContainer = styled.div`
@@ -27,10 +35,11 @@ const InputContainer = styled.div`
 
 const InputRow = styled.div`
   align-items: center;
-  display: flex;
-  padding: 0.5rem;
+  display: grid;
+  grid-template-columns: 1fr 2.5fr;
   justify-content: space-between;
-  width: 30%;
+  padding: 0.5rem;
+  width: 60%;
 
   h3 {
     margin: 0;
@@ -50,11 +59,41 @@ const StyledInput = styled.input`
   margin: 0;
   padding: 0.5rem 0.5rem;
   transition: all 0.3s;
+  width: 100%;
 
   &:focus {
     border: 1px solid #000060;
     box-shadow: 0 0 3px 1px #000060;
     outline: none;
+  }
+
+  &:hover {
+    border: 1px solid #000060;
+    box-shadow: 0 0 3px 1px #000060;
+    cursor: pointer;
+  }
+`
+
+const StyledDropdown = styled(Dropdown)`
+  div.Dropdown-control {
+    border: 1px solid #333;
+    border-radius: 10px;
+    margin: 0;
+    padding: 0.5rem 0.5rem;
+    transition: all 0.3s;
+    width: 100%;
+
+    &:hover {
+      border: 1px solid #000060;
+      box-shadow: 0 0 3px 1px #000060;
+      cursor: pointer;
+      outline: none;
+    }
+  }
+
+  div.Dropdown-menu {
+    border: 1px solid #55f;
+    border-radius: 15px;
   }
 `
 
@@ -133,6 +172,11 @@ export const CrateCosting = (): JSX.Element => {
     err: ''
   })
   const [forkliftOnly, setForkliftOnly] = useState(false)
+
+  const [stepSixError, setStepSixError] = useState('')
+  const [numberOfBearers, setNumberOfBearers] = useState(0)
+  const [bearerSize, setBearerSize] = useState('')
+  const [bottomSlatSizes, setBottomSlatSizes] = useState('')
 
   const chooseCostingType = (choice: string) => {
     setCostingType(choice)
@@ -241,6 +285,34 @@ export const CrateCosting = (): JSX.Element => {
   const chooseForkliftOnly = (forkliftOnly: boolean) => {
     setForkliftOnly(forkliftOnly)
     setStep(6)
+  }
+
+  const setNumOfBearers = (value: string) => {
+    if (isNaN(Number(value))) return setStepSixError('Only numbers are allowed')
+
+    setNumberOfBearers(Number(value))
+    setStepSixError('')
+  }
+
+  const selectBearerSize = (selectedBearerSize: string) => {
+    setBearerSize(selectedBearerSize)
+  }
+
+  const selectBottomSlatSize = (bottomSlatSize: string) => {
+    setBottomSlatSizes(bottomSlatSize)
+  }
+
+  const finaliseCrateBase = () => {
+    const numberOfBearersValid = numberOfBearers > 0
+    const bearerSizeChosen = bearerSize !== ''
+    const bottomSlatSizeChosen = bottomSlatSizes !== ''
+
+    const allValuesValid =
+      numberOfBearersValid && bearerSizeChosen && bottomSlatSizeChosen
+
+    if (!allValuesValid) return setStepSixError('All values must be set')
+
+    setStep(7)
   }
 
   return (
@@ -357,6 +429,52 @@ export const CrateCosting = (): JSX.Element => {
           question='Is it loaded by forklift only, or forklift and pallet Trolley?'
           choices={forkliftOnlyChoices}
         />
+      )}
+
+      {step === 6 && (
+        <>
+          <h2>Base of Crate</h2>
+          <InputContainer>
+            <InputRow>
+              <h3>Number of bearers</h3>
+              <StyledInput
+                onChange={e => setNumOfBearers(e.target.value)}
+                onClick={e => {
+                  const target = e.target as HTMLInputElement
+                  target.select()
+                }}
+                type='text'
+                value={numberOfBearers}
+              />
+            </InputRow>
+            <InputRow>
+              <h3>Width and thickness of bearers</h3>
+              <StyledDropdown
+                options={woodSizes}
+                onChange={e => {
+                  const value: string = e.value
+                  selectBearerSize(value)
+                }}
+                placeholder='Select bearer width and thickness'
+                value={bearerSize}
+              />
+            </InputRow>
+            <InputRow>
+              <h3>Width and thickness of bottom slats</h3>
+              <StyledDropdown
+                options={woodSizes}
+                onChange={e => {
+                  const value: string = e.value
+                  selectBottomSlatSize(value)
+                }}
+                placeholder='Select bottom slats width and thickness'
+                value={bottomSlatSizes}
+              />
+            </InputRow>
+            {stepSixError && <p style={{ color: 'red' }}>{stepSixError}</p>}
+            <Button onClick={finaliseCrateBase}>Finalise crate base</Button>
+          </InputContainer>
+        </>
       )}
     </div>
   )

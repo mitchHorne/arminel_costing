@@ -1,3 +1,4 @@
 import { constingsTypes, containerTypes, woodTypes } from './costings'
+import { woodSizes } from './sizes'
 
-export { constingsTypes, containerTypes, woodTypes }
+export { constingsTypes, containerTypes, woodSizes, woodTypes }
