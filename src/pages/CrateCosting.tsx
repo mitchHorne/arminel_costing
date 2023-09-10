@@ -104,7 +104,7 @@ const MultiChoice = ({
       <h2>{question}</h2>
       <ContentContainer column>
         {choices.map(value => (
-          <Button minWidth='10rem' onClick={() => choiceFunction(value)}>
+          <Button minWidth='13rem' onClick={() => choiceFunction(value)}>
             {value}
           </Button>
         ))}
@@ -132,6 +132,7 @@ export const CrateCosting = (): JSX.Element => {
     value: 0,
     err: ''
   })
+  const [forkliftOnly, setForkliftOnly] = useState(false)
 
   const chooseCostingType = (choice: string) => {
     setCostingType(choice)
@@ -235,15 +236,24 @@ export const CrateCosting = (): JSX.Element => {
     setStep(5)
   }
 
+  const forkliftOnlyChoices = ['Forklift Only', 'Forklift and Trolley']
+
+  const chooseForkliftOnly = (forkliftOnly: boolean) => {
+    setForkliftOnly(forkliftOnly)
+    setStep(6)
+  }
+
   return (
     <div>
       {step === 0 && <CostingTypeChoice chooseType={chooseCostingType} />}
+
       {step === 1 && (
         <YesNoChoice
           question='Is the crate for exporting purposes?'
           choiceFunction={chooseExport}
         />
       )}
+
       {step === 1.1 && (
         <MultiChoice
           question='Is the wood Kiln dry or wet offsaw?'
@@ -251,12 +261,14 @@ export const CrateCosting = (): JSX.Element => {
           choices={woodTypeOptions}
         />
       )}
+
       {step === 2 && (
         <YesNoChoice
           choiceFunction={chooseContainer}
           question='Is the crate going to be transported in a container?'
         />
       )}
+
       {step === 2.1 && (
         <MultiChoice
           choiceFunction={chooseContainerType}
@@ -264,6 +276,7 @@ export const CrateCosting = (): JSX.Element => {
           choices={containerTypeChoices}
         />
       )}
+
       {step === 3 && (
         <>
           <h2>Please specify inner dimensions in cm</h2>
@@ -336,6 +349,14 @@ export const CrateCosting = (): JSX.Element => {
             </Button>
           </InputContainer>
         </>
+      )}
+
+      {step === 5 && (
+        <MultiChoice
+          choiceFunction={chooseForkliftOnly}
+          question='Is it loaded by forklift only, or forklift and pallet Trolley?'
+          choices={forkliftOnlyChoices}
+        />
       )}
     </div>
   )
