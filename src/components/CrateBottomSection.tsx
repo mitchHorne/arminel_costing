@@ -1,33 +1,6 @@
-import styled from 'styled-components'
 import { InputContainer, InputRow, StyledInput } from './InputFormComponents'
-import { Button } from './Button'
+import { Button, Dropdown } from './'
 import { woodSizes } from '../constants'
-
-import Dropdown from 'react-dropdown'
-import 'react-dropdown/style.css'
-
-const StyledDropdown = styled(Dropdown)`
-  div.Dropdown-control {
-    border: 1px solid #333;
-    border-radius: 10px;
-    margin: 0;
-    padding: 0.5rem 0.5rem;
-    transition: all 0.3s;
-    width: 100%;
-
-    &:hover {
-      border: 1px solid #000060;
-      box-shadow: 0 0 3px 1px #000060;
-      cursor: pointer;
-      outline: none;
-    }
-  }
-
-  div.Dropdown-menu {
-    border: 1px solid #55f;
-    border-radius: 15px;
-  }
-`
 
 export default ({
   numberOfBearers,
@@ -61,7 +34,7 @@ export default ({
       </InputRow>
       <InputRow>
         <h3>Width and thickness of bearers</h3>
-        <StyledDropdown
+        <Dropdown
           options={woodSizes}
           onChange={e => {
             const value: string = e.value
@@ -73,7 +46,7 @@ export default ({
       </InputRow>
       <InputRow>
         <h3>Width and thickness of bottom slats</h3>
-        <StyledDropdown
+        <Dropdown
           options={woodSizes}
           onChange={e => {
             const value: string = e.value

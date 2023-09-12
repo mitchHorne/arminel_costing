@@ -9,6 +9,7 @@ import { Button, CostingChoiceButton } from '../components'
 import InnerDimensionsSection from '../components/InnerDimensionsSection'
 import CarryCapacitySection from '../components/CarryCapacitySection'
 import CrateBottomSection from '../components/CrateBottomSection'
+import CrateSideSection from '../components/CrateSideSection'
 
 const ContentContainer = styled.div`
   display: flex;
@@ -106,6 +107,9 @@ export const CrateCosting = (): JSX.Element => {
   const [bearerSize, setBearerSize] = useState('')
   const [bottomSlatSizes, setBottomSlatSizes] = useState('')
   const [stepSixError, setStepSixError] = useState('')
+
+  const [sideSlatSize, setSideSlatSize] = useState('')
+  const [stepSevenError, setStepSevenError] = useState('')
 
   const chooseCostingType = (choice: string) => {
     setCostingType(choice)
@@ -205,7 +209,10 @@ export const CrateCosting = (): JSX.Element => {
         return setStepSixError('Only numbers are allowed')
       setNumberOfBearers(Number(value))
     } else if (part === 'bearerSize') setBearerSize(value)
-    else if (part === 'bottomSlatSizes') setBottomSlatSizes(value)
+    else if (part === 'bottomSlatSizes') {
+      setBottomSlatSizes(value)
+      setSideSlatSize(value)
+    }
 
     setStepSixError('')
   }
@@ -222,6 +229,8 @@ export const CrateCosting = (): JSX.Element => {
 
     setStep(7)
   }
+
+  const finaliseCrateSide = () => setStep(8)
 
   return (
     <div>
@@ -290,9 +299,12 @@ export const CrateCosting = (): JSX.Element => {
       )}
 
       {step === 7 && (
-        <>
-          <h1>Step 7</h1>
-        </>
+        <CrateSideSection
+          sideSlatSize={sideSlatSize}
+          stepSevenError={stepSevenError}
+          setCrateSideValues={setSideSlatSize}
+          finaliseCrateSide={finaliseCrateSide}
+        />
       )}
     </div>
   )
