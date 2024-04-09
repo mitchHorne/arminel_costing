@@ -93,7 +93,7 @@ export const CrateCosting = (): JSX.Element => {
 
   const [forExport, setForExport] = useState(false)
 
-  const [woodType, setWoodType] = useState('')
+  const [woodType, setWoodType] = useState('kilnDry')
 
   const [inContainer, setInContainer] = useState(false)
 
@@ -301,6 +301,7 @@ export const CrateCosting = (): JSX.Element => {
           stepSixError={stepSixError}
           setBaseCrateValues={setBaseCrateValues}
           finaliseCrateBase={finaliseCrateBase}
+          woodType={woodType}
         />
       )}
 

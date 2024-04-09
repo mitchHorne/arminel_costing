@@ -2,7 +2,14 @@ import styled from 'styled-components'
 import Dropdown from 'react-dropdown'
 import 'react-dropdown/style.css'
 
-export default styled(Dropdown)`
+interface Props {
+  options: { value: string; label: string }[]
+  onChange: Function
+  placeholder: String
+  value: String
+}
+
+export default styled(Dropdown)<Props>`
   div.Dropdown-control {
     border: 1px solid #333;
     border-radius: 10px;
