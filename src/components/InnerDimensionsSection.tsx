@@ -17,7 +17,7 @@ export default ({
   finaliseDimensions: Function
 }) => (
   <>
-    <h2>Please specify inner dimensions in cm</h2>
+    <h2>Please specify inner dimensions in mm</h2>
     <InputContainer>
       <InputRow>
         <h3>Length</h3>

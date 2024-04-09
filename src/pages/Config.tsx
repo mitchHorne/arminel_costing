@@ -3,7 +3,7 @@ import { useState } from 'react'
 import styled from 'styled-components'
 import { Button } from '../components'
 import { saveData } from '../utils/files'
-import { setPrices } from '../store/prices'
+import { setPrices } from '../constants/prices'
 
 const ControlContainer = styled.div`
   display: flex;
@@ -115,8 +115,8 @@ const StyledInput = styled.input`
 
 const renderConfigPrices = (
   priceCategory: PriceCategoryType,
-  chageConfiguration: Function,
-  type: 'kilmDry' | 'wetOffSaw'
+  changeConfiguration: Function,
+  type: 'kilnDry' | 'wetOffSaw'
 ): JSX.Element => {
   const categories: Array<String> = Object.keys(priceCategory)
 
@@ -126,7 +126,7 @@ const renderConfigPrices = (
         <PriceCategoryConfigItem>
           <h4>{category}</h4>
           <StyledInput
-            onChange={e => chageConfiguration(category, e.target.value, type)}
+            onChange={e => changeConfiguration(category, e.target.value, type)}
             onClick={e => {
               const target = e.target as HTMLInputElement
               target.select()
@@ -149,18 +149,18 @@ export const Config = (): JSX.Element => {
   const [configData, setConfigData] = useState(activeData)
   const [configuring, setConfiguring] = useState(false)
 
-  const chageConfiguration = (
+  const changeConfiguration = (
     key: string,
     value: String,
-    category: 'kilmDry' | 'wetOffSaw'
+    category: 'kilnDry' | 'wetOffSaw'
   ): void => {
     const numberVal = Number(value)
     if (Number.isNaN(numberVal)) return
 
     let newData
-    if (category === 'kilmDry') {
-      const kilmDry = { ...configData.kilmDry, [key]: numberVal }
-      newData = { ...configData, kilmDry: kilmDry }
+    if (category === 'kilnDry') {
+      const kilnDry = { ...configData.kilnDry, [key]: numberVal }
+      newData = { ...configData, kilnDry: kilnDry }
     } else {
       const wetOffSaw = { ...configData.wetOffSaw, [key]: numberVal }
       newData = { ...configData, wetOffSaw: wetOffSaw }
@@ -200,6 +200,8 @@ export const Config = (): JSX.Element => {
     }
   }
 
+  console.log(configData)
+
   return (
     <div>
       {configuring ? (
@@ -211,18 +213,18 @@ export const Config = (): JSX.Element => {
           </ControlContainer>
           <ContentContainer>
             <div>
-              <h3>Kilm Dry</h3>
+              <h3>kiln Dry</h3>
               {renderConfigPrices(
-                configData.kilmDry,
-                chageConfiguration,
-                'kilmDry'
+                configData.kilnDry,
+                changeConfiguration,
+                'kilnDry'
               )}
             </div>
             <div>
               <h3>Wet OffSaw</h3>
               {renderConfigPrices(
                 configData.wetOffSaw,
-                chageConfiguration,
+                changeConfiguration,
                 'wetOffSaw'
               )}
             </div>
@@ -261,8 +263,8 @@ export const Config = (): JSX.Element => {
           <Button onClick={() => setConfiguring(true)}>Configure Prices</Button>
           <ContentContainer>
             <div>
-              <h3>Kilm Dry</h3>
-              {renderPrices(activeData.kilmDry)}
+              <h3>kiln Dry</h3>
+              {renderPrices(activeData.kilnDry)}
             </div>
             <div>
               <h3>Wet OffSaw</h3>

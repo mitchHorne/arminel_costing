@@ -5,8 +5,7 @@ import {
   readTextFile,
   writeFile
 } from '@tauri-apps/api/fs'
-import { basePrices } from './prices'
-import { Prices, initialPrices } from '../store/prices'
+import { Prices, initialPrices } from '../constants/prices'
 
 const dataFileName = 'data/prices.json'
 
@@ -30,7 +29,7 @@ export const createBaseFolder = async (): Promise<CreateBaseFolderReturn> => {
   if (!baseFileExists) {
     try {
       await createDataFolder()
-      await saveData(basePrices)
+      await saveData(initialPrices)
     } catch (e: any) {
       console.error(e)
     }

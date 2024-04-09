@@ -2,7 +2,7 @@ import { Routes, Route, Link, Navigate, useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { setPrices } from '../store/prices'
+import { setPrices } from '../constants/prices'
 import { CrateCosting, Config } from '../pages'
 
 import { createBaseFolder } from '../utils/files'

@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
-import priceReducer from './prices'
+import priceReducer from '../constants/prices'
 
 export default configureStore({
   reducer: {

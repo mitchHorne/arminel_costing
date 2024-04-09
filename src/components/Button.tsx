@@ -1,6 +1,11 @@
 import styled from 'styled-components'
 
-export const Button = styled.button`
+interface Props {
+  minWidth?: string
+  onClick: Function
+}
+
+export const Button = styled.button<Props>`
   background: #000080;
   border: 1px solid #000080;
   border-radius: 10px;

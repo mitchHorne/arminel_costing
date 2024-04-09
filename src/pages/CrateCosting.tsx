@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
-import * as R from 'ramda'
 
 import { constingsTypes, containerTypes, woodTypes } from '../constants'
 import { Button, CostingChoiceButton } from '../components'
@@ -9,9 +8,14 @@ import { Button, CostingChoiceButton } from '../components'
 import InnerDimensionsSection from '../components/InnerDimensionsSection'
 import CarryCapacitySection from '../components/CarryCapacitySection'
 import CrateBottomSection from '../components/CrateBottomSection'
-import CrateSideSection from '../components/CrateSideSection'
+// import CrateSideSection from '../components/CrateSideSection'
+import CostFinalization from '../components/CostFinalization'
 
-const ContentContainer = styled.div`
+interface Props {
+  column?: boolean
+}
+
+const ContentContainer = styled.div<Props>`
   display: flex;
 
   ${props =>
@@ -299,12 +303,31 @@ export const CrateCosting = (): JSX.Element => {
       )}
 
       {step === 7 && (
-        <CrateSideSection
-          sideSlatSize={sideSlatSize}
-          stepSevenError={stepSevenError}
-          setCrateSideValues={setSideSlatSize}
-          finaliseCrateSide={finaliseCrateSide}
+        <CostFinalization
+          props={{
+            prices,
+            costingType,
+            forExport,
+            woodType,
+            inContainer,
+            containerType,
+            innerDimensionsLength,
+            innerDimensionsWidth,
+            innerDimensionsHeight,
+            carryCapacity,
+            forkliftOnly,
+            numberOfBearers,
+            bearerSize,
+            bottomSlatSizes
+          }}
         />
+        // <CrateSideSection
+        //   sideSlatSize={sideSlatSize}
+        //   stepSevenError={stepSevenError}
+        //   setCrateSideValues={setSideSlatSize}
+        //   finaliseCrateSide={finaliseCrateSide}
+        // />
+        // <
       )}
     </div>
   )
