@@ -1,5 +1,5 @@
-import { lengths } from '../constants/sizes'
-import { Prices } from '../constants/prices'
+import { lengths } from '../../constants/sizes'
+import { Prices } from '../../constants/prices'
 
 const calculateSideSlatDimensions = (
   bottomSlatThickness: string

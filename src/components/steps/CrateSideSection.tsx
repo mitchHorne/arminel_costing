@@ -1,6 +1,6 @@
 import { InputContainer, InputRow } from './InputFormComponents'
-import { Button, Dropdown } from './'
-import { woodSizes } from '../constants'
+import { Button, Dropdown } from '..'
+import { woodSizes } from '../../constants'
 
 export default ({
   sideSlatSize,

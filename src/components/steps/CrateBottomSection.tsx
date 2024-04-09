@@ -1,6 +1,6 @@
 import { InputContainer, InputRow, StyledInput } from './InputFormComponents'
-import { Button, Dropdown } from './'
-import { woodSizes } from '../constants'
+import { Button, Dropdown } from '..'
+import { woodSizes } from '../../constants'
 
 export default ({
   numberOfBearers,

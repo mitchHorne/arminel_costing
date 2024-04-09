@@ -1,5 +1,5 @@
 import { InputContainer, InputRow, StyledInput } from './InputFormComponents'
-import { Button } from './Button'
+import { Button } from '../Button'
 
 export default ({
   innerDimensionsLength,
