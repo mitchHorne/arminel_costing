@@ -5,11 +5,13 @@ import styled from 'styled-components'
 import { constingsTypes, containerTypes, woodTypes } from '../constants'
 import { Button, CostingChoiceButton } from '../components'
 
-import InnerDimensionsSection from '../components/steps/InnerDimensionsSection'
-import CarryCapacitySection from '../components/steps/CarryCapacitySection'
-import CrateBottomSection from '../components/steps/CrateBottomSection'
-// import CrateSideSection from '../components/CrateSideSection'
-import CostFinalization from '../components/steps/CostFinalization'
+import {
+  CarryCapacitySection,
+  CostFinalization,
+  CrateBottomSection,
+  CrateSideSection,
+  InnerDimensionsSection
+} from '../components/steps'
 
 interface Props {
   column?: boolean

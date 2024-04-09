@@ -1,5 +1,5 @@
 import { Button } from './Button'
-import { CostingChoiceButton } from './steps/CostingChoiceButton'
+import { CostingChoiceButton } from './CostingChoiceButton'
 import Dropdown from './Dropdown'
 
 export { Button, CostingChoiceButton, Dropdown }

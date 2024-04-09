@@ -1,4 +1,4 @@
-import { InputContainer, InputRow, StyledInput } from './InputFormComponents'
+import { InputContainer, InputRow, StyledInput } from '../InputFormComponents'
 import { Button, Dropdown } from '..'
 import { woodSizes } from '../../constants'
 
