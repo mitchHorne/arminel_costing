@@ -1,4 +1,9 @@
-export const woodSizes = {
+interface WoodSizes {
+  kilnDry: { value: string; label: string }[]
+  wetOffSaw: { value: string; label: string }[]
+}
+
+export const woodSizes: WoodSizes = {
   kilnDry: [
     { value: '19x76', label: '19 x 76' },
     { value: '19x102', label: '19 x 102' },

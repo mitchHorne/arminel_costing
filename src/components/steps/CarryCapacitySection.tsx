@@ -1,4 +1,4 @@
-import { InputContainer, InputRow, StyledInput } from '../InputFormComponents'
+import { InputContainer, InputRow, StyledInput } from './InputFormComponents'
 import { Button } from '../Button'
 
 export default ({

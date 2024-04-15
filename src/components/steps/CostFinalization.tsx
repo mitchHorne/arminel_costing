@@ -10,9 +10,18 @@ const calculateSideSlatDimensions = (
 }
 
 const calculateBearerLength = (
+  inContainer: boolean,
   innerDimensionWidth: number,
-  sideSlatThickness: string
+  innerDimensionLength: number,
+  sideSlatThickness: string,
+  endSlatThickness: string,
+  endSlatWidth: string
 ): string => {
+  if (inContainer && innerDimensionLength > 1100) {
+    const totalEnds = Number(endSlatThickness) * 2 + Number(endSlatWidth) * 2
+    return String(innerDimensionLength + totalEnds)
+  }
+
   const totalSideSlatThickness = Number(sideSlatThickness) * 2
   return String(innerDimensionWidth + totalSideSlatThickness)
 }
@@ -23,7 +32,7 @@ const calculateBottomSlatQuantity = (
   innerDimensionLength: number,
   bottomSlatWidth: string
 ): string => {
-  if (inContainer)
+  if (inContainer && innerDimensionLength > 1100)
     return String(Math.ceil(innerDimensionLength / Number(bottomSlatWidth)))
   return String(Math.ceil(innerDimensionWidth / Number(bottomSlatWidth)))
 }
@@ -33,7 +42,7 @@ const calculateNails = (
   addedComponent: string,
   factor: number = 2
 ): string => {
-  const components = Number(mainComponent) + Number(addedComponent)
+  const components = Number(mainComponent) * Number(addedComponent)
   return String(components * factor)
 }
 
@@ -45,11 +54,11 @@ const calculateSideSlatQuantity = (
 
 const calculateSideSlatLength = (
   innerDimensionsLength: number,
-  sideSlatThickness: string,
-  sideSlatWidth: string
+  endSlatThickness: string,
+  endSlatWidth: string
 ): string => {
-  const totalSideSlatThickness = Number(sideSlatThickness) * 2
-  const totalEndCleatWidth = Number(sideSlatWidth) * 2
+  const totalSideSlatThickness = Number(endSlatThickness) * 2
+  const totalEndCleatWidth = Number(endSlatWidth) * 2
   return String(
     innerDimensionsLength + totalSideSlatThickness + totalEndCleatWidth
   )
@@ -59,33 +68,29 @@ const calculateSideCleatLength = (
   bearerWidth: string,
   bottomSlatThickness: string,
   innerDimensionHeight: number,
-  sideSlatThickness: string,
-  sideCleatThickness: string
+  lidSlatThickness: string,
+  lidCleatThickness: string
 ): string =>
   String(
     Number(bearerWidth) +
       Number(bottomSlatThickness) +
       innerDimensionHeight +
-      Number(sideSlatThickness) +
-      Number(sideCleatThickness)
+      Number(lidSlatThickness) +
+      Number(lidCleatThickness)
   )
 
 const calculateEndCleatLengthHorizontal = (
   innerDimensionLength: number,
-  sideSlatWidth: string
+  endCleatWidth: string
 ): string => {
-  const totalSideSlatWidth = Number(sideSlatWidth) * 2
+  const totalSideSlatWidth = Number(endCleatWidth) * 2
   return String(innerDimensionLength - totalSideSlatWidth)
 }
 
 const calculateLidSlatQuantity = (
-  inContainer: boolean,
-  innerDimensionsLength: number,
   innerDimensionsWidth: number,
   lidSlatWidth: string
 ): string => {
-  if (inContainer)
-    return String(Math.ceil(innerDimensionsLength / Number(lidSlatWidth)))
   return String(Math.ceil(innerDimensionsWidth / Number(lidSlatWidth)))
 }
 
@@ -114,6 +119,21 @@ const calculateCost = (
 ): number => {
   const price = Number(prices.kilnDry[size])
   return cubicMeters * price
+}
+
+const calculateBottomSlatLength = (
+  inContainer: boolean,
+  innerDimensionLength: number,
+  sideSlatThickness: string,
+  endSlatThickness: string,
+  endCleatThickness: string
+): string => {
+  if (inContainer && innerDimensionLength > 1100) {
+    const totalSides = Number(sideSlatThickness) * 2
+    return String(innerDimensionLength + totalSides)
+  }
+  const totalEnds = Number(endSlatThickness) * 2 + Number(endCleatThickness) * 2
+  return String(innerDimensionLength + totalEnds)
 }
 
 interface PropsStructure {
@@ -154,6 +174,7 @@ export default ({ props }: { props: PropsStructure }) => {
   const bottomSlatDimensions = bottomSlatSizes.split('x')
   const bottomSlatThickness = bottomSlatDimensions[0]
   const bottomSlatWidth = bottomSlatDimensions[1]
+
   const bottomSlatQuantity = calculateBottomSlatQuantity(
     inContainer,
     innerDimensionsWidth,
@@ -165,11 +186,6 @@ export default ({ props }: { props: PropsStructure }) => {
   const sideSlatThickness = sideSlatDimensions[0]
   const sideSlatWidth = sideSlatDimensions[1]
 
-  const bearerLength = calculateBearerLength(
-    innerDimensionsWidth,
-    sideSlatThickness
-  )
-
   const bottomNails = calculateNails(
     String(numberOfBearers),
     bottomSlatQuantity
@@ -179,27 +195,15 @@ export default ({ props }: { props: PropsStructure }) => {
     innerDimensionsHeight,
     sideSlatWidth
   )
-  const sideSlatLength = calculateSideSlatLength(
-    innerDimensionsLength,
-    sideSlatThickness,
-    sideSlatWidth
-  )
 
   const sideCleatThickness = sideSlatThickness
-  const sideCleatWidth = sideSlatWidth // TO BE FIXED
-  const sideCleatLength = calculateSideCleatLength(
-    bearerWidth,
-    bottomSlatThickness,
-    innerDimensionsHeight,
-    sideSlatThickness,
-    sideCleatThickness
-  )
+  const sideCleatWidth = '76'
   const sideCleatQuantity = String(Number(numberOfBearers) * 2)
 
   const sideNails = calculateNails(sideSlatQuantity, sideCleatQuantity)
 
   const endSlatWidth = sideSlatWidth
-  const endSlatThickness = sideCleatThickness
+  const endSlatThickness = sideSlatThickness
   const endSlatQuantity = sideSlatQuantity
   const endSlatLength = String(innerDimensionsWidth)
 
@@ -208,18 +212,39 @@ export default ({ props }: { props: PropsStructure }) => {
   const endCleatLengthVertical = String(innerDimensionsHeight)
   const endCleatLengthHorizontal = calculateEndCleatLengthHorizontal(
     innerDimensionsLength,
-    sideSlatWidth
+    endCleatWidth
   )
   const endCleatQuantity = '4'
+
+  const sideSlatLength = calculateSideSlatLength(
+    innerDimensionsLength,
+    endSlatThickness,
+    endSlatWidth
+  )
+
+  const bearerLength = calculateBearerLength(
+    inContainer,
+    innerDimensionsWidth,
+    innerDimensionsLength,
+    sideSlatThickness,
+    endSlatThickness,
+    endCleatThickness
+  )
+
+  const bottomSlatLength = calculateBottomSlatLength(
+    inContainer,
+    innerDimensionsLength,
+    sideSlatThickness,
+    endSlatThickness,
+    endSlatThickness
+  )
 
   const endNails = calculateNails(sideSlatQuantity, endSlatQuantity, 3)
 
   const lidSlatWidth = sideSlatWidth
   const lidSlatThickness = sideSlatThickness
-  const lidSlatLength = inContainer ? bearerLength : bearerLength // Replace with bottom slat length
+  const lidSlatLength = sideSlatLength
   const lidSlatQuantity = calculateLidSlatQuantity(
-    inContainer,
-    innerDimensionsLength,
     innerDimensionsWidth,
     lidSlatWidth
   )
@@ -227,15 +252,23 @@ export default ({ props }: { props: PropsStructure }) => {
   const lidCleatWidth = sideCleatWidth
   const lidCleatThickness = sideCleatThickness
   const lidCleatLength = inContainer
-    ? bearerWidth /* Replace with bottom slat length */
-    : bearerLength
-  const lidCleatQuantity = String(numberOfBearers)
+    ? bottomSlatLength
+    : String(innerDimensionsWidth + Number(sideSlatThickness) * 2)
+  const lidCleatQuantity = String(Number(sideSlatQuantity) / 2)
+
+  const sideCleatLength = calculateSideCleatLength(
+    bearerWidth,
+    bottomSlatThickness,
+    innerDimensionsHeight,
+    lidSlatThickness,
+    lidCleatThickness
+  )
 
   const lidNails = calculateNails(lidSlatQuantity, lidCleatQuantity)
 
   // Work out the cut-off lengths
   const bearerCostLength = calculateCostLength(bearerLength)
-  const bottomSlatCostLength = calculateCostLength(bearerLength)
+  const bottomSlatCostLength = calculateCostLength(bottomSlatLength)
   const sideSlatCostLength = calculateCostLength(sideSlatLength)
   const sideCleatCostLength = calculateCostLength(sideCleatLength)
   const endSlatCostLength = calculateCostLength(endSlatLength)

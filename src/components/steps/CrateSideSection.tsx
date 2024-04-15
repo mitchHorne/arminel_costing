@@ -1,4 +1,4 @@
-import { InputContainer, InputRow } from '../InputFormComponents'
+import { InputContainer, InputRow } from './InputFormComponents'
 import { Button, Dropdown } from '..'
 import { woodSizes } from '../../constants'
 
@@ -20,7 +20,7 @@ export default ({
         <h3>Width and thickness of side slats</h3>
         <Dropdown
           options={woodSizes}
-          onChange={e => {
+          onChange={(e: { value: string }) => {
             const value: string = e.value
             setCrateSideValues(value)
           }}
