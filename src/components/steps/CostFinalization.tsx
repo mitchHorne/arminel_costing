@@ -1,5 +1,8 @@
+import { useState } from 'react'
 import { lengths } from '../../constants/sizes'
 import { Prices } from '../../constants/prices'
+import { DisplayContainer, InputContainer } from './InputFormComponents'
+import { Button } from '../Button'
 
 const calculateSideSlatDimensions = (
   bottomSlatThickness: string
@@ -121,11 +124,6 @@ const calculateCost = (
   let type: 'kilnDry' | 'wetOffSaw' = 'kilnDry'
   if (woodType) type = woodType
   const price = Number(prices[type][size])
-  console.log(woodType)
-  console.log(prices[type])
-  console.log(size)
-  console.log(prices)
-  console.log(price)
   return cubicMeters * price
 }
 
@@ -176,6 +174,8 @@ export default ({ props }: { props: PropsStructure }) => {
   } = props
 
   if (!props) return null
+
+  const [showDetails, setShowDetails] = useState<boolean>(false)
 
   const bearerDimensions = bearerSize.split('x')
   const bearerThickness = bearerDimensions[0]
@@ -438,18 +438,119 @@ export default ({ props }: { props: PropsStructure }) => {
   return (
     <div>
       <h1>Cost Finalization</h1>
-      <p>Cost Finalization content</p>
-      <h2>Costs</h2>
-      <h3>Total cost per item</h3>
-      <p>R {totalCostPerItem}</p>
-      <h3>Total cost for labor</h3>
-      <p>R {totalLaborCost}</p>
-      <h3>Total cost for nails</h3>
-      <p>R {totalNailsCost}</p>
-      <h3>Total cost per item plus margin: 40%</h3>
-      <p>R {totalCostPerItemPlusMargin}</p>
-      <h3>Total cost for 100 boxes</h3>
-      <p>R {totalCost}</p>
+
+      {!showDetails && (
+        <>
+          <DisplayContainer>
+            <h3>Total cost per item</h3>
+            <p>R {totalCostPerItem}</p>
+            <h3>Total cost for labor</h3>
+            <p>R {totalLaborCost}</p>
+            <h3>Total cost for nails</h3>
+            <p>R {totalNailsCost}</p>
+            <h3>Total cost per item plus margin: 40%</h3>
+            <p>R {totalCostPerItemPlusMargin}</p>
+            <h3>Total cost for 100 boxes</h3>
+            <p>R {totalCost}</p>
+          </DisplayContainer>
+          <InputContainer>
+            <Button onClick={() => setShowDetails(true)}>Show Details</Button>
+          </InputContainer>
+        </>
+      )}
+
+      {showDetails && (
+        <>
+          <DisplayContainer>
+            <h3>Shipped in a container</h3>
+            <p>{inContainer ? 'Yes' : 'No'}</p>
+            <h3>Inner Dimensions Length x Width x Height (mm)</h3>
+            <p>
+              {innerDimensionsLength} X {innerDimensionsWidth} X{'   '}
+              {innerDimensionsHeight}
+            </p>
+            <h3>Wood for Bearers</h3>
+            <p>{bearerWoodType === 'kilnDry' ? 'Kiln Dry' : 'Wet Offsaw'}</p>
+            <h3>Number of Bearers</h3>
+            <p>{numberOfBearers}</p>
+            <h3>Bearer Size (mm)</h3>
+            <p>{bearerSize}</p>
+            <h3>Wood for rest of Crate</h3>
+            <p>Kiln Dry</p>
+            <h3>Length of Bearers (mm)</h3>
+            <p>{bearerLength}</p>
+            <h3>Bottom Slat Size (mm)</h3>
+            <p>
+              {bottomSlatThickness}X{bottomSlatWidth}
+            </p>
+            <h3>Bottom Slat Length (mm)</h3>
+            <p>{bottomSlatLength}</p>
+            <h3>Number of Bottom Slats</h3>
+            <p>{bottomSlatQuantity}</p>
+            <h3>Number of Bottom Nails</h3>
+            <p>{bottomNails}</p>
+            <h3>Side Slat Size (mm)</h3>
+            <p>
+              {sideSlatThickness}x{sideSlatWidth}
+            </p>
+            <h3>Side Slat Length (mm)</h3>
+            <p>{sideSlatLength}</p>
+            <h3>Number of Side slats</h3>
+            <p>{sideSlatQuantity}</p>
+            <h3>Side Cleat Size (mm)</h3>
+            <p>
+              {sideCleatThickness}x{sideCleatWidth}
+            </p>
+            <h3>Side Cleat Length (mm)</h3>
+            <p>{sideCleatLength}</p>
+            <h3>Number of Side Cleats</h3>
+            <p>{sideCleatQuantity}</p>
+            <h3>Number of Side Nails</h3>
+            <p>{sideNails}</p>
+            <h3>End Slat Size (mm)</h3>
+            <p>
+              {endSlatThickness}x{endSlatWidth}
+            </p>
+            <h3>End Slat Length (mm)</h3>
+            <p>{endSlatLength}</p>
+            <h3>Number of End Slats</h3>
+            <p>{endSlatQuantity}</p>
+            <h3>End Cleat Size (mm)</h3>
+            <p>
+              {endCleatThickness}x{endCleatWidth}
+            </p>
+            <h3>End Cleat Horizontal Length (mm)</h3>
+            <p>{endCleatLengthHorizontal}</p>
+            <h3>End Cleat Vertical Length (mm)</h3>
+            <p>{endCleatLengthVertical}</p>
+            <h3>Number of End Cleats</h3>
+            <p>{Number(endCleatQuantity) * 2}</p>
+            <h3>Number of End Nails</h3>
+            <p>{endNails}</p>
+            <h3>Lid Slat Size (mm)</h3>
+            <p>
+              {lidSlatThickness}x{lidSlatWidth}
+            </p>
+            <h3>Lid Slat Length (mm)</h3>
+            <p>{lidSlatLength}</p>
+            <h3>Number of Lid Slats</h3>
+            <p>{lidSlatQuantity}</p>
+            <h3>Lid Cleat Size (mm)</h3>
+            <p>
+              {lidCleatThickness}x{lidCleatWidth}
+            </p>
+            <h3>Lid Cleat Length (mm)</h3>
+            <p>{lidCleatLength}</p>
+            <h3>Number of Side Cleats</h3>
+            <p>{lidCleatQuantity}</p>
+            <h3>Number of Side Nails</h3>
+            <p>{lidNails}</p>
+          </DisplayContainer>
+          <InputContainer>
+            <Button onClick={() => setShowDetails(false)}>Show Details</Button>
+          </InputContainer>
+        </>
+      )}
     </div>
   )
 }

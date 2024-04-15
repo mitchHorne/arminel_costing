@@ -70,3 +70,18 @@ export const StyledDropdown = styled(Dropdown)`
     border-radius: 15px;
   }
 `
+
+export const DisplayContainer = styled.div`
+  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding-left: 25vw;
+  width: 50vw;
+
+  h3,
+  p {
+    margin: 0;
+    padding: 0;
+    padding-bottom: 10px;
+  }
+`
