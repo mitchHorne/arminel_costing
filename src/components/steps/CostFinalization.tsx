@@ -115,9 +115,17 @@ const calculateCubicMeters = (
 const calculateCost = (
   size: string,
   cubicMeters: number,
-  prices: Prices
+  prices: Prices,
+  woodType?: 'kilnDry' | 'wetOffSaw'
 ): number => {
-  const price = Number(prices.kilnDry[size])
+  let type: 'kilnDry' | 'wetOffSaw' = 'kilnDry'
+  if (woodType) type = woodType
+  const price = Number(prices[type][size])
+  console.log(woodType)
+  console.log(prices[type])
+  console.log(size)
+  console.log(prices)
+  console.log(price)
   return cubicMeters * price
 }
 
@@ -151,6 +159,7 @@ interface PropsStructure {
   numberOfBearers: number
   prices: Prices
   woodType: string
+  bearerWoodType: 'kilnDry' | 'wetOffSaw'
 }
 
 export default ({ props }: { props: PropsStructure }) => {
@@ -162,7 +171,8 @@ export default ({ props }: { props: PropsStructure }) => {
     innerDimensionsLength,
     innerDimensionsWidth,
     numberOfBearers,
-    prices
+    prices,
+    bearerWoodType
   } = props
 
   if (!props) return null
@@ -342,10 +352,11 @@ export default ({ props }: { props: PropsStructure }) => {
   const bearerTotalCost = calculateCost(
     `${bearerThickness}x${bearerWidth}`,
     bearerCubicMeters,
-    prices
+    prices,
+    bearerWoodType
   )
   const bottomSlatTotalCost = calculateCost(
-    `${bearerThickness}x${bearerWidth}`,
+    `${bottomSlatThickness}x${bottomSlatWidth}`,
     bottomSlatCubicMeters,
     prices
   )

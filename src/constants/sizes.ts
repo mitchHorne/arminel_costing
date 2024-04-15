@@ -17,7 +17,7 @@ export const woodSizes: WoodSizes = {
   ],
   wetOffSaw: [
     { value: '76x76', label: '76 x 76' },
-    { value: '76x114', label: '76 x 76' },
+    { value: '76x102', label: '76 x 102' },
     { value: '102x102', label: '102 x 102' }
   ]
 }

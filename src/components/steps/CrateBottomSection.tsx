@@ -1,6 +1,6 @@
 import { InputContainer, InputRow, StyledInput } from './InputFormComponents'
 import { Button, Dropdown } from '..'
-import { woodSizes, woodTypes } from '../../constants'
+import { woodSizes } from '../../constants'
 
 export default ({
   numberOfBearers,
@@ -9,6 +9,8 @@ export default ({
   stepSixError,
   setBaseCrateValues,
   finaliseCrateBase,
+  bearerWoodType,
+  setBearerWoodType,
   woodType
 }: {
   numberOfBearers: Number
@@ -17,10 +19,12 @@ export default ({
   stepSixError: String
   setBaseCrateValues: Function
   finaliseCrateBase: Function
-  woodType: string
+  bearerWoodType: 'kilnDry' | 'wetOffSaw'
+  setBearerWoodType: Function
+  woodType: 'Kiln Dry' | 'Wet Offsaw'
 }) => {
   const woodTypeParam: 'kilnDry' | 'wetOffSaw' =
-    woodType === woodTypes.KILNDRY ? 'kilnDry' : 'wetOffSaw'
+    woodType === 'Kiln Dry' ? 'kilnDry' : 'wetOffSaw'
 
   return (
     <>
@@ -41,9 +45,24 @@ export default ({
           />
         </InputRow>
         <InputRow>
+          <h3>Type of Wood for Bearers</h3>
+          <Dropdown
+            options={[
+              { value: 'kilnDry', label: 'Kiln Dry' },
+              { value: 'wetOffSaw', label: 'Wet Off Saw' }
+            ]}
+            onChange={(e: { value: String }) => {
+              const value: String = e.value
+              setBearerWoodType(value)
+            }}
+            placeholder='Choose type of wood for bearers'
+            value={bearerWoodType}
+          />
+        </InputRow>
+        <InputRow>
           <h3>Width and thickness of bearers</h3>
           <Dropdown
-            options={woodSizes[woodTypeParam]}
+            options={woodSizes[bearerWoodType]}
             onChange={(e: { value: String }) => {
               const value: String = e.value
               setBaseCrateValues('bearerSize', value)

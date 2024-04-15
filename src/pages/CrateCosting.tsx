@@ -17,6 +17,11 @@ interface Props {
   column?: boolean
 }
 
+interface WoodTypes {
+  KILNDRY: 'Kiln Dry'
+  WETOFFSAW: 'Wet Offsaw'
+}
+
 const ContentContainer = styled.div<Props>`
   display: flex;
 
@@ -93,7 +98,9 @@ export const CrateCosting = (): JSX.Element => {
 
   const [forExport, setForExport] = useState(false)
 
-  const [woodType, setWoodType] = useState('kilnDry')
+  const [woodType, setWoodType] = useState<
+    WoodTypes['KILNDRY'] | WoodTypes['WETOFFSAW']
+  >('Kiln Dry')
 
   const [inContainer, setInContainer] = useState(false)
 
@@ -110,6 +117,9 @@ export const CrateCosting = (): JSX.Element => {
   const [forkliftOnly, setForkliftOnly] = useState(false)
 
   const [numberOfBearers, setNumberOfBearers] = useState(0)
+  const [bearerWoodType, setBearerWoodType] = useState<'kilnDry' | 'wetOffSaw'>(
+    'kilnDry'
+  )
   const [bearerSize, setBearerSize] = useState('')
   const [bottomSlatSizes, setBottomSlatSizes] = useState('')
   const [stepSixError, setStepSixError] = useState('')
@@ -301,6 +311,8 @@ export const CrateCosting = (): JSX.Element => {
           stepSixError={stepSixError}
           setBaseCrateValues={setBaseCrateValues}
           finaliseCrateBase={finaliseCrateBase}
+          bearerWoodType={bearerWoodType}
+          setBearerWoodType={setBearerWoodType}
           woodType={woodType}
         />
       )}
@@ -321,7 +333,8 @@ export const CrateCosting = (): JSX.Element => {
             forkliftOnly,
             numberOfBearers,
             bearerSize,
-            bottomSlatSizes
+            bottomSlatSizes,
+            bearerWoodType
           }}
         />
         // <CrateSideSection

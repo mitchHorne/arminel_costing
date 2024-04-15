@@ -10,7 +10,12 @@ export const containerTypes = {
   TWENTYFOOTHC: '20ft HC'
 }
 
-export const woodTypes = {
+interface WoodTypes {
+  KILNDRY: 'Kiln Dry'
+  WETOFFSAW: 'Wet Offsaw'
+}
+
+export const woodTypes: WoodTypes = {
   KILNDRY: 'Kiln Dry',
   WETOFFSAW: 'Wet Offsaw'
 }
