@@ -71,17 +71,51 @@ export const StyledDropdown = styled(Dropdown)`
   }
 `
 
-export const DisplayContainer = styled.div`
-  align-items: center;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  padding-left: 25vw;
-  width: 50vw;
+interface IDisplayContainer {
+  columns?: boolean
+}
 
-  h3,
+export const DisplayContainer = styled.div<IDisplayContainer>`
+  align-items: stretch;
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: ${props =>
+    props.columns ? '1fr 1fr 1fr 1fr' : '1fr 1fr'};
+  overflow: hidden;
+  margin-bottom: 1rem;
+  margin-left: ${props => (props.columns ? '5vw' : '25vw')};
+  width: ${props => (props.columns ? '90vw' : '50vw')};
+
+  h4,
   p {
     margin: 0;
     padding: 0;
-    padding-bottom: 10px;
+    position: relative;
+    width: 100%;
+  }
+
+  h4:before,
+  h4:after,
+  p:before,
+  p:after {
+    content: '';
+    background-color: #333;
+    position: absolute;
+  }
+
+  h4:after,
+  p:after {
+    height: 1px;
+    left: 0;
+    top: -1rem;
+    width: 100vw;
+  }
+
+  h4:before,
+  p:before {
+    bottom: 0;
+    height: 100vh;
+    left: -1rem;
+    width: 1px;
   }
 `

@@ -442,15 +442,15 @@ export default ({ props }: { props: PropsStructure }) => {
       {!showDetails && (
         <>
           <DisplayContainer>
-            <h3>Total cost per item</h3>
+            <h4>Total cost per item</h4>
             <p>R {totalCostPerItem}</p>
-            <h3>Total cost for labor</h3>
+            <h4>Total cost for labor</h4>
             <p>R {totalLaborCost}</p>
-            <h3>Total cost for nails</h3>
+            <h4>Total cost for nails</h4>
             <p>R {totalNailsCost}</p>
-            <h3>Total cost per item plus margin: 40%</h3>
+            <h4>Total cost per item plus margin: 40%</h4>
             <p>R {totalCostPerItemPlusMargin}</p>
-            <h3>Total cost for 100 boxes</h3>
+            <h4>Total cost for 100 boxes</h4>
             <p>R {totalCost}</p>
           </DisplayContainer>
           <InputContainer>
@@ -461,89 +461,89 @@ export default ({ props }: { props: PropsStructure }) => {
 
       {showDetails && (
         <>
-          <DisplayContainer>
-            <h3>Shipped in a container</h3>
+          <DisplayContainer columns>
+            <h4>Shipped in a container</h4>
             <p>{inContainer ? 'Yes' : 'No'}</p>
-            <h3>Inner Dimensions Length x Width x Height (mm)</h3>
+            <h4>Inner Dimensions Length x Width x Height (mm)</h4>
             <p>
               {innerDimensionsLength} X {innerDimensionsWidth} X{'   '}
               {innerDimensionsHeight}
             </p>
-            <h3>Wood for Bearers</h3>
+            <h4>Wood for Bearers</h4>
             <p>{bearerWoodType === 'kilnDry' ? 'Kiln Dry' : 'Wet Offsaw'}</p>
-            <h3>Number of Bearers</h3>
+            <h4>Number of Bearers</h4>
             <p>{numberOfBearers}</p>
-            <h3>Bearer Size (mm)</h3>
+            <h4>Bearer Size (mm)</h4>
             <p>{bearerSize}</p>
-            <h3>Wood for rest of Crate</h3>
+            <h4>Wood for rest of Crate</h4>
             <p>Kiln Dry</p>
-            <h3>Length of Bearers (mm)</h3>
+            <h4>Length of Bearers (mm)</h4>
             <p>{bearerLength}</p>
-            <h3>Bottom Slat Size (mm)</h3>
+            <h4>Bottom Slat Size (mm)</h4>
             <p>
               {bottomSlatThickness}X{bottomSlatWidth}
             </p>
-            <h3>Bottom Slat Length (mm)</h3>
+            <h4>Bottom Slat Length (mm)</h4>
             <p>{bottomSlatLength}</p>
-            <h3>Number of Bottom Slats</h3>
+            <h4>Number of Bottom Slats</h4>
             <p>{bottomSlatQuantity}</p>
-            <h3>Number of Bottom Nails</h3>
+            <h4>Number of Bottom Nails</h4>
             <p>{bottomNails}</p>
-            <h3>Side Slat Size (mm)</h3>
+            <h4>Side Slat Size (mm)</h4>
             <p>
               {sideSlatThickness}x{sideSlatWidth}
             </p>
-            <h3>Side Slat Length (mm)</h3>
+            <h4>Side Slat Length (mm)</h4>
             <p>{sideSlatLength}</p>
-            <h3>Number of Side slats</h3>
+            <h4>Number of Side slats</h4>
             <p>{sideSlatQuantity}</p>
-            <h3>Side Cleat Size (mm)</h3>
+            <h4>Side Cleat Size (mm)</h4>
             <p>
               {sideCleatThickness}x{sideCleatWidth}
             </p>
-            <h3>Side Cleat Length (mm)</h3>
+            <h4>Side Cleat Length (mm)</h4>
             <p>{sideCleatLength}</p>
-            <h3>Number of Side Cleats</h3>
+            <h4>Number of Side Cleats</h4>
             <p>{sideCleatQuantity}</p>
-            <h3>Number of Side Nails</h3>
+            <h4>Number of Side Nails</h4>
             <p>{sideNails}</p>
-            <h3>End Slat Size (mm)</h3>
+            <h4>End Slat Size (mm)</h4>
             <p>
               {endSlatThickness}x{endSlatWidth}
             </p>
-            <h3>End Slat Length (mm)</h3>
+            <h4>End Slat Length (mm)</h4>
             <p>{endSlatLength}</p>
-            <h3>Number of End Slats</h3>
+            <h4>Number of End Slats</h4>
             <p>{endSlatQuantity}</p>
-            <h3>End Cleat Size (mm)</h3>
+            <h4>End Cleat Size (mm)</h4>
             <p>
               {endCleatThickness}x{endCleatWidth}
             </p>
-            <h3>End Cleat Horizontal Length (mm)</h3>
+            <h4>End Cleat Horizontal Length (mm)</h4>
             <p>{endCleatLengthHorizontal}</p>
-            <h3>End Cleat Vertical Length (mm)</h3>
+            <h4>End Cleat Vertical Length (mm)</h4>
             <p>{endCleatLengthVertical}</p>
-            <h3>Number of End Cleats</h3>
+            <h4>Number of End Cleats</h4>
             <p>{Number(endCleatQuantity) * 2}</p>
-            <h3>Number of End Nails</h3>
+            <h4>Number of End Nails</h4>
             <p>{endNails}</p>
-            <h3>Lid Slat Size (mm)</h3>
+            <h4>Lid Slat Size (mm)</h4>
             <p>
               {lidSlatThickness}x{lidSlatWidth}
             </p>
-            <h3>Lid Slat Length (mm)</h3>
+            <h4>Lid Slat Length (mm)</h4>
             <p>{lidSlatLength}</p>
-            <h3>Number of Lid Slats</h3>
+            <h4>Number of Lid Slats</h4>
             <p>{lidSlatQuantity}</p>
-            <h3>Lid Cleat Size (mm)</h3>
+            <h4>Lid Cleat Size (mm)</h4>
             <p>
               {lidCleatThickness}x{lidCleatWidth}
             </p>
-            <h3>Lid Cleat Length (mm)</h3>
+            <h4>Lid Cleat Length (mm)</h4>
             <p>{lidCleatLength}</p>
-            <h3>Number of Side Cleats</h3>
+            <h4>Number of Side Cleats</h4>
             <p>{lidCleatQuantity}</p>
-            <h3>Number of Side Nails</h3>
+            <h4>Number of Side Nails</h4>
             <p>{lidNails}</p>
           </DisplayContainer>
           <InputContainer>
