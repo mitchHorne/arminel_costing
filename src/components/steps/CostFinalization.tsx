@@ -4,7 +4,9 @@ import { Prices } from '../../constants/prices'
 import {
   DisplayContainer,
   GridCard,
-  InputContainer
+  InputContainer,
+  InputRow,
+  StyledInput
 } from './InputFormComponents'
 import { Button } from '../Button'
 
@@ -180,6 +182,8 @@ export default ({ props }: { props: PropsStructure }) => {
   if (!props) return null
 
   const [showDetails, setShowDetails] = useState<boolean>(false)
+  const [profitMargin, setProfitMargin] = useState<string>('40')
+  const [numberToMake, setNumberToMake] = useState<string>('100')
 
   const bearerDimensions = bearerSize.split('x')
   const bearerThickness = bearerDimensions[0]
@@ -411,7 +415,7 @@ export default ({ props }: { props: PropsStructure }) => {
     lidSlatCubicMeters +
     lidCleatCubicMeters
 
-  const totalMaterialsCost =
+  const totalMaterialsCost: Number =
     bearerTotalCost +
     bottomSlatTotalCost +
     sideSlatTotalCost +
@@ -423,21 +427,29 @@ export default ({ props }: { props: PropsStructure }) => {
     lidCleatTotalCost
 
   const totalLaborCost = (
-    Math.round(totalCubicMeters * Number(prices.labor) * 100) / 100
+    Math.round(totalCubicMeters * Number(prices.labor) * Number(numberToMake)) /
+    100
   ).toFixed(2)
-  const totalNailsCost = (totalNails * Number(prices.nails)) / 100
+  const totalNailsCost = Math.round(
+    (totalNails * Number(prices.nails)) / 100
+  ).toFixed(2)
 
-  const totalCostPerItem = (
-    Math.round(
-      (totalMaterialsCost + Number(totalLaborCost) + totalNailsCost) * 100
-    ) / 100
+  const totalCostPerItem = Math.round(
+    (Number(totalMaterialsCost) +
+      Number(totalLaborCost) +
+      Number(totalNailsCost) * 100) /
+      100
   ).toFixed(2)
   const totalCostPerItemPlusMargin = (
     Math.round(
-      (Number(totalCostPerItem) + Number(totalCostPerItem) * 0.4) * 100
+      (Number(totalCostPerItem) +
+        (Number(totalCostPerItem) * Number(profitMargin)) / 100) *
+        100
     ) / 100
   ).toFixed(2)
-  const totalCost = Number(totalCostPerItemPlusMargin) * 100 // 100 boxes - Add quantity of boxes to calculate
+  const totalCost = Math.round(
+    (Number(totalCostPerItemPlusMargin) * Number(numberToMake) * 100) / 100
+  ).toFixed(2)
 
   return (
     <div>
@@ -445,6 +457,36 @@ export default ({ props }: { props: PropsStructure }) => {
 
       {!showDetails && (
         <>
+          <InputContainer>
+            <InputRow>
+              <h3>Profit Margin in %</h3>
+              <StyledInput
+                onChange={(e: { target: { value: string } }) =>
+                  setProfitMargin(e.target.value)
+                }
+                onClick={e => {
+                  const target = e.target as HTMLInputElement
+                  target.select()
+                }}
+                type='number'
+                value={profitMargin}
+              />
+            </InputRow>
+            <InputRow>
+              <h3>Number of crates to make</h3>
+              <StyledInput
+                onChange={(e: { target: { value: string } }) =>
+                  setNumberToMake(e.target.value)
+                }
+                onClick={e => {
+                  const target = e.target as HTMLInputElement
+                  target.select()
+                }}
+                type='number'
+                value={numberToMake}
+              />
+            </InputRow>
+          </InputContainer>
           <DisplayContainer>
             <GridCard>
               <h4>Total cost per item</h4>
@@ -459,11 +501,11 @@ export default ({ props }: { props: PropsStructure }) => {
               <p>R {totalNailsCost}</p>
             </GridCard>
             <GridCard>
-              <h4>Total cost per item plus margin: 40%</h4>
+              <h4>Total cost per item plus margin: {profitMargin}%</h4>
               <p>R {totalCostPerItemPlusMargin}</p>
             </GridCard>
             <GridCard>
-              <h4>Total cost for 100 boxes</h4>
+              <h4>Total cost for {numberToMake} boxes</h4>
               <p>R {totalCost}</p>
             </GridCard>
           </DisplayContainer>

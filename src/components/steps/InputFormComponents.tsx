@@ -79,8 +79,7 @@ export const DisplayContainer = styled.div<IDisplayContainer>`
   align-items: stretch;
   display: grid;
   gap: 2rem;
-  grid-template-columns: ${props =>
-    props.columns ? '1fr 1fr 1fr' : '1fr 1fr 1fr'};
+  grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: auto;
   overflow: hidden;
   margin-bottom: 1rem;
