@@ -1,7 +1,11 @@
 import { useState } from 'react'
 import { lengths } from '../../constants/sizes'
 import { Prices } from '../../constants/prices'
-import { DisplayContainer, InputContainer } from './InputFormComponents'
+import {
+  DisplayContainer,
+  GridCard,
+  InputContainer
+} from './InputFormComponents'
 import { Button } from '../Button'
 
 const calculateSideSlatDimensions = (
@@ -442,16 +446,26 @@ export default ({ props }: { props: PropsStructure }) => {
       {!showDetails && (
         <>
           <DisplayContainer>
-            <h4>Total cost per item</h4>
-            <p>R {totalCostPerItem}</p>
-            <h4>Total cost for labor</h4>
-            <p>R {totalLaborCost}</p>
-            <h4>Total cost for nails</h4>
-            <p>R {totalNailsCost}</p>
-            <h4>Total cost per item plus margin: 40%</h4>
-            <p>R {totalCostPerItemPlusMargin}</p>
-            <h4>Total cost for 100 boxes</h4>
-            <p>R {totalCost}</p>
+            <GridCard>
+              <h4>Total cost per item</h4>
+              <p>R {totalCostPerItem}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Total cost for labor</h4>
+              <p>R {totalLaborCost}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Total cost for nails</h4>
+              <p>R {totalNailsCost}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Total cost per item plus margin: 40%</h4>
+              <p>R {totalCostPerItemPlusMargin}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Total cost for 100 boxes</h4>
+              <p>R {totalCost}</p>
+            </GridCard>
           </DisplayContainer>
           <InputContainer>
             <Button onClick={() => setShowDetails(true)}>Show Details</Button>
@@ -462,89 +476,155 @@ export default ({ props }: { props: PropsStructure }) => {
       {showDetails && (
         <>
           <DisplayContainer columns>
-            <h4>Shipped in a container</h4>
-            <p>{inContainer ? 'Yes' : 'No'}</p>
-            <h4>Inner Dimensions Length x Width x Height (mm)</h4>
-            <p>
-              {innerDimensionsLength} X {innerDimensionsWidth} X{'   '}
-              {innerDimensionsHeight}
-            </p>
-            <h4>Wood for Bearers</h4>
-            <p>{bearerWoodType === 'kilnDry' ? 'Kiln Dry' : 'Wet Offsaw'}</p>
-            <h4>Number of Bearers</h4>
-            <p>{numberOfBearers}</p>
-            <h4>Bearer Size (mm)</h4>
-            <p>{bearerSize}</p>
-            <h4>Wood for rest of Crate</h4>
-            <p>Kiln Dry</p>
-            <h4>Length of Bearers (mm)</h4>
-            <p>{bearerLength}</p>
-            <h4>Bottom Slat Size (mm)</h4>
-            <p>
-              {bottomSlatThickness}X{bottomSlatWidth}
-            </p>
-            <h4>Bottom Slat Length (mm)</h4>
-            <p>{bottomSlatLength}</p>
-            <h4>Number of Bottom Slats</h4>
-            <p>{bottomSlatQuantity}</p>
-            <h4>Number of Bottom Nails</h4>
-            <p>{bottomNails}</p>
-            <h4>Side Slat Size (mm)</h4>
-            <p>
-              {sideSlatThickness}x{sideSlatWidth}
-            </p>
-            <h4>Side Slat Length (mm)</h4>
-            <p>{sideSlatLength}</p>
-            <h4>Number of Side slats</h4>
-            <p>{sideSlatQuantity}</p>
-            <h4>Side Cleat Size (mm)</h4>
-            <p>
-              {sideCleatThickness}x{sideCleatWidth}
-            </p>
-            <h4>Side Cleat Length (mm)</h4>
-            <p>{sideCleatLength}</p>
-            <h4>Number of Side Cleats</h4>
-            <p>{sideCleatQuantity}</p>
-            <h4>Number of Side Nails</h4>
-            <p>{sideNails}</p>
-            <h4>End Slat Size (mm)</h4>
-            <p>
-              {endSlatThickness}x{endSlatWidth}
-            </p>
-            <h4>End Slat Length (mm)</h4>
-            <p>{endSlatLength}</p>
-            <h4>Number of End Slats</h4>
-            <p>{endSlatQuantity}</p>
-            <h4>End Cleat Size (mm)</h4>
-            <p>
-              {endCleatThickness}x{endCleatWidth}
-            </p>
-            <h4>End Cleat Horizontal Length (mm)</h4>
-            <p>{endCleatLengthHorizontal}</p>
-            <h4>End Cleat Vertical Length (mm)</h4>
-            <p>{endCleatLengthVertical}</p>
-            <h4>Number of End Cleats</h4>
-            <p>{Number(endCleatQuantity) * 2}</p>
-            <h4>Number of End Nails</h4>
-            <p>{endNails}</p>
-            <h4>Lid Slat Size (mm)</h4>
-            <p>
-              {lidSlatThickness}x{lidSlatWidth}
-            </p>
-            <h4>Lid Slat Length (mm)</h4>
-            <p>{lidSlatLength}</p>
-            <h4>Number of Lid Slats</h4>
-            <p>{lidSlatQuantity}</p>
-            <h4>Lid Cleat Size (mm)</h4>
-            <p>
-              {lidCleatThickness}x{lidCleatWidth}
-            </p>
-            <h4>Lid Cleat Length (mm)</h4>
-            <p>{lidCleatLength}</p>
-            <h4>Number of Side Cleats</h4>
-            <p>{lidCleatQuantity}</p>
-            <h4>Number of Side Nails</h4>
-            <p>{lidNails}</p>
+            <GridCard>
+              <h4>Shipped in a container</h4>
+              <p>{inContainer ? 'Yes' : 'No'}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Inner Dimensions Length x Width x Height (mm)</h4>
+              <p>
+                {innerDimensionsLength} X {innerDimensionsWidth} X{'   '}
+                {innerDimensionsHeight}
+              </p>
+            </GridCard>
+            <GridCard>
+              <h4>Wood for Bearers</h4>
+              <p>{bearerWoodType === 'kilnDry' ? 'Kiln Dry' : 'Wet Offsaw'}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Number of Bearers</h4>
+              <p>{numberOfBearers}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Bearer Size (mm)</h4>
+              <p>{bearerSize}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Wood for rest of Crate</h4>
+              <p>Kiln Dry</p>
+            </GridCard>
+            <GridCard>
+              <h4>Length of Bearers (mm)</h4>
+              <p>{bearerLength}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Bottom Slat Size (mm)</h4>
+              <p>
+                {bottomSlatThickness}X{bottomSlatWidth}
+              </p>
+            </GridCard>
+            <GridCard>
+              <h4>Bottom Slat Length (mm)</h4>
+              <p>{bottomSlatLength}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Number of Bottom Slats</h4>
+              <p>{bottomSlatQuantity}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Number of Bottom Nails</h4>
+              <p>{bottomNails}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Side Slat Size (mm)</h4>
+              <p>
+                {sideSlatThickness}x{sideSlatWidth}
+              </p>
+            </GridCard>
+            <GridCard>
+              <h4>Side Slat Length (mm)</h4>
+              <p>{sideSlatLength}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Number of Side slats</h4>
+              <p>{sideSlatQuantity}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Side Cleat Size (mm)</h4>
+              <p>
+                {sideCleatThickness}x{sideCleatWidth}
+              </p>
+            </GridCard>
+            <GridCard>
+              <h4>Side Cleat Length (mm)</h4>
+              <p>{sideCleatLength}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Number of Side Cleats</h4>
+              <p>{sideCleatQuantity}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Number of Side Nails</h4>
+              <p>{sideNails}</p>
+            </GridCard>
+            <GridCard>
+              <h4>End Slat Size (mm)</h4>
+              <p>
+                {endSlatThickness}x{endSlatWidth}
+              </p>
+            </GridCard>
+            <GridCard>
+              <h4>End Slat Length (mm)</h4>
+              <p>{endSlatLength}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Number of End Slats</h4>
+              <p>{endSlatQuantity}</p>
+            </GridCard>
+            <GridCard>
+              <h4>End Cleat Size (mm)</h4>
+              <p>
+                {endCleatThickness}x{endCleatWidth}
+              </p>
+            </GridCard>
+            <GridCard>
+              <h4>End Cleat Horizontal Length (mm)</h4>
+              <p>{endCleatLengthHorizontal}</p>
+            </GridCard>
+            <GridCard>
+              <h4>End Cleat Vertical Length (mm)</h4>
+              <p>{endCleatLengthVertical}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Number of End Cleats</h4>
+              <p>{Number(endCleatQuantity) * 2}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Number of End Nails</h4>
+              <p>{endNails}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Lid Slat Size (mm)</h4>
+              <p>
+                {lidSlatThickness}x{lidSlatWidth}
+              </p>
+            </GridCard>
+            <GridCard>
+              <h4>Lid Slat Length (mm)</h4>
+              <p>{lidSlatLength}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Number of Lid Slats</h4>
+              <p>{lidSlatQuantity}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Lid Cleat Size (mm)</h4>
+              <p>
+                {lidCleatThickness}x{lidCleatWidth}
+              </p>
+            </GridCard>
+            <GridCard>
+              <h4>Lid Cleat Length (mm)</h4>
+              <p>{lidCleatLength}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Number of Side Cleats</h4>
+              <p>{lidCleatQuantity}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Number of Side Nails</h4>
+              <p>{lidNails}</p>
+            </GridCard>
           </DisplayContainer>
           <InputContainer>
             <Button onClick={() => setShowDetails(false)}>Show Details</Button>

@@ -80,7 +80,8 @@ export const DisplayContainer = styled.div<IDisplayContainer>`
   display: grid;
   gap: 2rem;
   grid-template-columns: ${props =>
-    props.columns ? '1fr 1fr 1fr 1fr' : '1fr 1fr'};
+    props.columns ? '1fr 1fr 1fr' : '1fr 1fr 1fr'};
+  grid-template-rows: auto;
   overflow: hidden;
   margin-bottom: 1rem;
   margin-left: ${props => (props.columns ? '5vw' : '25vw')};
@@ -90,31 +91,34 @@ export const DisplayContainer = styled.div<IDisplayContainer>`
   p {
     margin: 0;
     padding: 0;
-    position: relative;
     width: 100%;
   }
+`
 
-  h4:before,
-  h4:after,
-  p:before,
-  p:after {
+export const GridCard = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  justify-content: space-between;
+
+  :before,
+  :after {
     content: '';
     background-color: #333;
     position: absolute;
   }
 
-  h4:after,
-  p:after {
+  :after {
     height: 1px;
     left: 0;
     top: -1rem;
     width: 100vw;
   }
 
-  h4:before,
-  p:before {
-    bottom: 0;
-    height: 100vh;
+  :before {
+    bottom: -1rem;
+    height: 1000vh;
     left: -1rem;
     width: 1px;
   }
