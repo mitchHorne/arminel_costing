@@ -16,7 +16,7 @@ export default ({
     <h2>Please specify carrying capacity in kg</h2>
     <InputContainer>
       <InputRow>
-        <h3>Capacity</h3>
+        <h4>Capacity</h4>
         <StyledInput
           onChange={e => setCarryCapacity(e.target.value)}
           onClick={e => {

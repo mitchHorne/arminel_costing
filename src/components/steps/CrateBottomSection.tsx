@@ -31,7 +31,7 @@ export default ({
       <h2>Base of Crate</h2>
       <InputContainer>
         <InputRow>
-          <h3>Number of bearers</h3>
+          <h4>Number of bearers</h4>
           <StyledInput
             onChange={e =>
               setBaseCrateValues('numberOfBearers', e.target.value)
@@ -45,7 +45,7 @@ export default ({
           />
         </InputRow>
         <InputRow>
-          <h3>Type of Wood for Bearers</h3>
+          <h4>Type of Wood for Bearers</h4>
           <Dropdown
             options={[
               { value: 'kilnDry', label: 'Kiln Dry' },
@@ -60,7 +60,7 @@ export default ({
           />
         </InputRow>
         <InputRow>
-          <h3>Width and thickness of bearers</h3>
+          <h4>Width and thickness of bearers</h4>
           <Dropdown
             options={woodSizes[bearerWoodType]}
             onChange={(e: { value: String }) => {
@@ -72,7 +72,7 @@ export default ({
           />
         </InputRow>
         <InputRow>
-          <h3>Width and thickness of bottom slats</h3>
+          <h4>Width and thickness of bottom slats</h4>
           <Dropdown
             options={woodSizes[woodTypeParam]}
             onChange={(e: { value: String }) => {

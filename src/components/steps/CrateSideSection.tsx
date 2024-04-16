@@ -17,7 +17,7 @@ export default ({
     <h2>Crate side slats</h2>
     <InputContainer>
       <InputRow>
-        <h3>Width and thickness of side slats</h3>
+        <h4>Width and thickness of side slats</h4>
         <Dropdown
           options={woodSizes}
           onChange={(e: { value: string }) => {

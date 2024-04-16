@@ -213,7 +213,7 @@ export const Config = (): JSX.Element => {
           </ControlContainer>
           <ContentContainer>
             <div>
-              <h3>kiln Dry</h3>
+              <h4>kiln Dry</h4>
               {renderConfigPrices(
                 configData.kilnDry,
                 changeConfiguration,
@@ -221,7 +221,7 @@ export const Config = (): JSX.Element => {
               )}
             </div>
             <div>
-              <h3>Wet OffSaw</h3>
+              <h4>Wet OffSaw</h4>
               {renderConfigPrices(
                 configData.wetOffSaw,
                 changeConfiguration,
@@ -229,7 +229,7 @@ export const Config = (): JSX.Element => {
               )}
             </div>
             <div>
-              <h3>Misc</h3>
+              <h4>Misc</h4>
               <PriceCategoryConfigItem>
                 <h4>Nails</h4>
                 <StyledInput
@@ -263,15 +263,15 @@ export const Config = (): JSX.Element => {
           <Button onClick={() => setConfiguring(true)}>Configure Prices</Button>
           <ContentContainer>
             <div>
-              <h3>kiln Dry</h3>
+              <h4>kiln Dry</h4>
               {renderPrices(activeData.kilnDry)}
             </div>
             <div>
-              <h3>Wet OffSaw</h3>
+              <h4>Wet OffSaw</h4>
               {renderPrices(activeData.wetOffSaw)}
             </div>
             <div>
-              <h3>Misc</h3>
+              <h4>Misc</h4>
               <PriceCategory>
                 <div>
                   <p>Nails</p>

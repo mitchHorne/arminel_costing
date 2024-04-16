@@ -15,7 +15,7 @@ export const InputRow = styled.div`
   padding: 0.5rem;
   width: 60%;
 
-  h3 {
+  h4 {
     margin: 0;
     padding: 0;
     padding-right: 0.5em;
@@ -83,6 +83,7 @@ export const DisplayContainer = styled.div<IDisplayContainer>`
   grid-template-rows: auto;
   overflow: hidden;
   margin-bottom: 1rem;
+  margin-top: 1rem;
   margin-left: ${props => (props.columns ? '5vw' : '25vw')};
   width: ${props => (props.columns ? '90vw' : '50vw')};
 

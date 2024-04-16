@@ -10,12 +10,14 @@ import { createBaseFolder } from '../utils/files'
 const NavBar = styled.div`
   background: #ccc;
   border: 0;
+  box-shadow: 0 0 5px 1px #333;
   display: flex;
   left: 0;
   padding: 0;
   position: fixed;
   top: 0;
   width: 100%;
+  z-index: 999;
 `
 
 interface StyledLinkProps {

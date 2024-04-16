@@ -20,7 +20,7 @@ export default ({
     <h2>Please specify inner dimensions in mm</h2>
     <InputContainer>
       <InputRow>
-        <h3>Length</h3>
+        <h4>Length</h4>
         <StyledInput
           onChange={e => setDimensions('length', e.target.value)}
           onClick={e => {
@@ -32,7 +32,7 @@ export default ({
         />
       </InputRow>
       <InputRow>
-        <h3>Width</h3>
+        <h4>Width</h4>
         <StyledInput
           onChange={e => setDimensions('width', e.target.value)}
           onClick={e => {
@@ -44,7 +44,7 @@ export default ({
         />
       </InputRow>
       <InputRow>
-        <h3>Height</h3>
+        <h4>Height</h4>
         <StyledInput
           onChange={e => setDimensions('height', e.target.value)}
           onClick={e => {

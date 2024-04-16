@@ -427,28 +427,39 @@ export default ({ props }: { props: PropsStructure }) => {
     lidCleatTotalCost
 
   const totalLaborCost = (
-    Math.round(totalCubicMeters * Number(prices.labor) * Number(numberToMake)) /
-    100
-  ).toFixed(2)
-  const totalNailsCost = Math.round(
-    (totalNails * Number(prices.nails)) / 100
-  ).toFixed(2)
-
-  const totalCostPerItem = Math.round(
-    (Number(totalMaterialsCost) +
-      Number(totalLaborCost) +
-      Number(totalNailsCost) * 100) /
-      100
-  ).toFixed(2)
-  const totalCostPerItemPlusMargin = (
     Math.round(
-      (Number(totalCostPerItem) +
-        (Number(totalCostPerItem) * Number(profitMargin)) / 100) *
+      ((totalCubicMeters * Number(prices.labor) * Number(numberToMake)) / 100) *
         100
     ) / 100
   ).toFixed(2)
-  const totalCost = Math.round(
-    (Number(totalCostPerItemPlusMargin) * Number(numberToMake) * 100) / 100
+
+  const totalLaborCostPerItem = (
+    Math.round((Number(totalLaborCost) / Number(numberToMake)) * 100) / 100
+  ).toFixed(2)
+
+  const totalNailsCost = (
+    Math.round(((totalNails * Number(prices.nails)) / 100) * 100) / 100
+  ).toFixed(2)
+
+  const totalCostPerItem = (
+    Math.round(
+      Number(totalMaterialsCost) +
+        Number(totalLaborCost) / Number(numberToMake) +
+        Number(totalNailsCost) * 100
+    ) / 100
+  ).toFixed(2)
+
+  const margin = Number(profitMargin) / 100
+  const totalCostPerItemPlusMargin = (
+    Math.round(
+      (Number(totalCostPerItem) + Number(totalCostPerItem) * margin) * 100
+    ) / 100
+  ).toFixed(2)
+
+  const totalCost = (
+    Math.round(
+      Number(totalCostPerItemPlusMargin) * Number(numberToMake) * 100
+    ) / 100
   ).toFixed(2)
 
   return (
@@ -459,7 +470,7 @@ export default ({ props }: { props: PropsStructure }) => {
         <>
           <InputContainer>
             <InputRow>
-              <h3>Profit Margin in %</h3>
+              <h4>Profit Margin %</h4>
               <StyledInput
                 onChange={(e: { target: { value: string } }) =>
                   setProfitMargin(e.target.value)
@@ -473,7 +484,7 @@ export default ({ props }: { props: PropsStructure }) => {
               />
             </InputRow>
             <InputRow>
-              <h3>Number of crates to make</h3>
+              <h4>Number of crates to make</h4>
               <StyledInput
                 onChange={(e: { target: { value: string } }) =>
                   setNumberToMake(e.target.value)
@@ -493,16 +504,20 @@ export default ({ props }: { props: PropsStructure }) => {
               <p>R {totalCostPerItem}</p>
             </GridCard>
             <GridCard>
-              <h4>Total cost for labor</h4>
-              <p>R {totalLaborCost}</p>
+              <h4>Total cost for labor per item</h4>
+              <p>R {totalLaborCostPerItem}</p>
             </GridCard>
             <GridCard>
-              <h4>Total cost for nails</h4>
+              <h4>Total cost for nails per item</h4>
               <p>R {totalNailsCost}</p>
             </GridCard>
             <GridCard>
               <h4>Total cost per item plus margin: {profitMargin}%</h4>
               <p>R {totalCostPerItemPlusMargin}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Total cost for Labor</h4>
+              <p>R {totalLaborCost}</p>
             </GridCard>
             <GridCard>
               <h4>Total cost for {numberToMake} boxes</h4>
