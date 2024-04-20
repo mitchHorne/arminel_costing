@@ -64,12 +64,12 @@ const calculateSideSlatQuantity = (
 const calculateSideSlatLength = (
   innerDimensionsLength: number,
   endSlatThickness: string,
-  endSlatWidth: string
+  endCleatThickness: string
 ): string => {
-  const totalSideSlatThickness = Number(endSlatThickness) * 2
-  const totalEndCleatWidth = Number(endSlatWidth) * 2
+  const totalEndSlatThickness = Number(endSlatThickness) * 2
+  const totalEndCleatThickness = Number(endCleatThickness) * 2
   return String(
-    innerDimensionsLength + totalSideSlatThickness + totalEndCleatWidth
+    innerDimensionsLength + totalEndSlatThickness + totalEndCleatThickness
   )
 }
 
@@ -113,9 +113,7 @@ const calculateCubicMeters = (
   length: string
 ): number => {
   const cubicMmPerComponent =
-    (Number(thickness) / 1000) *
-    (Number(width) / 1000) *
-    (Number(length) / 1000)
+    (Number(thickness) * Number(width) * Number(length)) / 1000000000
   const cubicMeterPerComponent = cubicMmPerComponent
   const totalCubicMeter = cubicMeterPerComponent * Number(quantity)
   return totalCubicMeter
@@ -234,12 +232,6 @@ export default ({ props }: { props: PropsStructure }) => {
   )
   const endCleatQuantity = '4'
 
-  const sideSlatLength = calculateSideSlatLength(
-    innerDimensionsLength,
-    endSlatThickness,
-    endSlatWidth
-  )
-
   const bearerLength = calculateBearerLength(
     inContainer,
     innerDimensionsWidth,
@@ -257,7 +249,9 @@ export default ({ props }: { props: PropsStructure }) => {
     endSlatThickness
   )
 
-  const endNails = calculateNails(sideSlatQuantity, endSlatQuantity, 3)
+  const sideSlatLength = bottomSlatLength
+
+  const endNails = calculateNails('4', endSlatQuantity, 3)
 
   const lidSlatWidth = sideSlatWidth
   const lidSlatThickness = sideSlatThickness
@@ -272,7 +266,7 @@ export default ({ props }: { props: PropsStructure }) => {
   const lidCleatLength = inContainer
     ? bottomSlatLength
     : String(innerDimensionsWidth + Number(sideSlatThickness) * 2)
-  const lidCleatQuantity = String(Number(sideSlatQuantity) / 2)
+  const lidCleatQuantity = numberOfBearers
 
   const sideCleatLength = calculateSideCleatLength(
     bearerWidth,
@@ -282,7 +276,7 @@ export default ({ props }: { props: PropsStructure }) => {
     lidCleatThickness
   )
 
-  const lidNails = calculateNails(lidSlatQuantity, lidCleatQuantity)
+  const lidNails = calculateNails(lidSlatQuantity, String(lidCleatQuantity))
 
   // Work out the cut-off lengths
   const bearerCostLength = calculateCostLength(bearerLength)
@@ -310,9 +304,9 @@ export default ({ props }: { props: PropsStructure }) => {
     bottomSlatCostLength
   )
   const sideSlatCubicMeters = calculateCubicMeters(
-    sideCleatQuantity,
-    sideCleatThickness,
-    sideCleatWidth,
+    sideSlatQuantity,
+    sideSlatThickness,
+    sideSlatWidth,
     sideSlatCostLength
   )
   const sideCleatCubicMeters = calculateCubicMeters(
@@ -346,7 +340,7 @@ export default ({ props }: { props: PropsStructure }) => {
     lidSlatCostLength
   )
   const lidCleatCubicMeters = calculateCubicMeters(
-    lidCleatQuantity,
+    String(lidCleatQuantity),
     lidCleatThickness,
     lidCleatWidth,
     lidCleatCostLength
@@ -428,8 +422,7 @@ export default ({ props }: { props: PropsStructure }) => {
 
   const totalLaborCost = (
     Math.round(
-      ((totalCubicMeters * Number(prices.labor) * Number(numberToMake)) / 100) *
-        100
+      totalCubicMeters * Number(prices.labor) * Number(numberToMake) * 100
     ) / 100
   ).toFixed(2)
 
@@ -443,9 +436,10 @@ export default ({ props }: { props: PropsStructure }) => {
 
   const totalCostPerItem = (
     Math.round(
-      Number(totalMaterialsCost) +
+      (Number(totalMaterialsCost) +
         Number(totalLaborCost) / Number(numberToMake) +
-        Number(totalNailsCost) * 100
+        Number(totalNailsCost)) *
+        100
     ) / 100
   ).toFixed(2)
 
@@ -460,6 +454,10 @@ export default ({ props }: { props: PropsStructure }) => {
     Math.round(
       Number(totalCostPerItemPlusMargin) * Number(numberToMake) * 100
     ) / 100
+  ).toFixed(2)
+
+  const profit = (
+    Math.round(Number(totalCostPerItem) * margin * 100) / 100
   ).toFixed(2)
 
   return (
@@ -514,6 +512,10 @@ export default ({ props }: { props: PropsStructure }) => {
             <GridCard>
               <h4>Total cost per item plus margin: {profitMargin}%</h4>
               <p>R {totalCostPerItemPlusMargin}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Total Profit per item: {profitMargin}%</h4>
+              <p>R {profit}</p>
             </GridCard>
             <GridCard>
               <h4>Total cost for Labor</h4>
@@ -675,12 +677,96 @@ export default ({ props }: { props: PropsStructure }) => {
               <p>{lidCleatLength}</p>
             </GridCard>
             <GridCard>
-              <h4>Number of Side Cleats</h4>
+              <h4>Number of lid Cleats</h4>
               <p>{lidCleatQuantity}</p>
             </GridCard>
             <GridCard>
               <h4>Number of Side Nails</h4>
               <p>{lidNails}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Total cubic meters</h4>
+              <p>{totalCubicMeters}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Bearer cubic meters</h4>
+              <p>{bearerCubicMeters}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Bottom slat cubic meters</h4>
+              <p>{bottomSlatCubicMeters}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Sie slat cubic meters</h4>
+              <p>{sideSlatCubicMeters}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Side cleat cubic meters</h4>
+              <p>{sideCleatCubicMeters}</p>
+            </GridCard>
+            <GridCard>
+              <h4>End slat cubic meters</h4>
+              <p>{endSlatCubicMeters}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Horizontal end cleat cubic meters</h4>
+              <p>{horizontalEndCleatCubicMeters}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Vertical end cleat cubic meters</h4>
+              <p>{verticalEndCleatCubicMeters}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Lid slat cubic meters</h4>
+              <p>{lidSlatCubicMeters}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Lid Cleat Cubic meters</h4>
+              <p>{lidCleatCubicMeters}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Labor cost per cubic meter</h4>
+              <p>R {String(prices.labor)}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Total material cost</h4>
+              <p>R {String(totalMaterialsCost)}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Total Bearer cost</h4>
+              <p>R {bearerTotalCost}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Total bottom slat cost</h4>
+              <p>R {bottomSlatTotalCost}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Total side slat cost</h4>
+              <p>R {sideSlatTotalCost}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Total Side cleat cost</h4>
+              <p>R {sideCleatTotalCost}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Total end slat cost</h4>
+              <p>R {endSlatTotalCost}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Total horizontal end cleat cost</h4>
+              <p>R {horizontalEndCleatTotalCost}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Total End cleat cost</h4>
+              <p>R {verticalEndCleatTotalCost}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Total Lid Slat cost</h4>
+              <p>R {lidSlatTotalCost}</p>
+            </GridCard>
+            <GridCard>
+              <h4>Total Lid cleat cost</h4>
+              <p>R {lidCleatTotalCost}</p>
             </GridCard>
           </DisplayContainer>
           <InputContainer>

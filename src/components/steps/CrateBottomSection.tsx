@@ -2,6 +2,15 @@ import { InputContainer, InputRow, StyledInput } from './InputFormComponents'
 import { Button, Dropdown } from '..'
 import { woodSizes } from '../../constants'
 
+function filterBearerSizes (
+  woodSizes: { value: string; label: string }[],
+  woodType: 'kilnDry' | 'wetOffSaw'
+): { value: string; label: string }[] {
+  if (woodType === 'wetOffSaw') return woodSizes
+  const allowedSizes: Array<String> = ['38x76', '38x114', '50x76', '76x228']
+  return woodSizes.filter(size => allowedSizes.includes(size.value))
+}
+
 export default ({
   numberOfBearers,
   bearerSize,
@@ -62,7 +71,10 @@ export default ({
         <InputRow>
           <h4>Width and thickness of bearers</h4>
           <Dropdown
-            options={woodSizes[bearerWoodType]}
+            options={filterBearerSizes(
+              woodSizes[bearerWoodType],
+              bearerWoodType
+            )}
             onChange={(e: { value: String }) => {
               const value: String = e.value
               setBaseCrateValues('bearerSize', value)
