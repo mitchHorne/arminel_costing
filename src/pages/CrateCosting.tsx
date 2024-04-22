@@ -9,7 +9,6 @@ import {
   CarryCapacitySection,
   CostFinalization,
   CrateBottomSection,
-  CrateSideSection,
   InnerDimensionsSection
 } from '../components/steps'
 

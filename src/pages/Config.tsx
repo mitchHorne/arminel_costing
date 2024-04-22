@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { Button } from '../components'
 import { saveData } from '../utils/files'
 import { setPrices } from '../constants/prices'
+import { S } from '@tauri-apps/api/cli-373e13ed'
 
 const ControlContainer = styled.div`
   display: flex;
@@ -53,7 +54,7 @@ const PriceCategory = styled.div`
 `
 
 interface PriceCategoryType {
-  [key: string]: Number
+  [key: string]: number
 }
 
 const renderPrices = (priceCategory: PriceCategoryType): JSX.Element => {
@@ -118,26 +119,24 @@ const renderConfigPrices = (
   changeConfiguration: Function,
   type: 'kilnDry' | 'wetOffSaw'
 ): JSX.Element => {
-  const categories: Array<String> = Object.keys(priceCategory)
+  const categories = Object.keys(priceCategory)
 
-  const priceCategoryComponents = categories.map(
-    (category: String): JSX.Element => {
-      return (
-        <PriceCategoryConfigItem>
-          <h4>{category}</h4>
-          <StyledInput
-            onChange={e => changeConfiguration(category, e.target.value, type)}
-            onClick={e => {
-              const target = e.target as HTMLInputElement
-              target.select()
-            }}
-            type='text'
-            value={priceCategory[category]}
-          />
-        </PriceCategoryConfigItem>
-      )
-    }
-  )
+  const priceCategoryComponents = categories.map((category): JSX.Element => {
+    return (
+      <PriceCategoryConfigItem>
+        <h4>{category}</h4>
+        <StyledInput
+          onChange={e => changeConfiguration(category, e.target.value, type)}
+          onClick={e => {
+            const target = e.target as HTMLInputElement
+            target.select()
+          }}
+          type='text'
+          value={priceCategory[category]}
+        />
+      </PriceCategoryConfigItem>
+    )
+  })
 
   return <PriceCategoryConfig>{priceCategoryComponents}</PriceCategoryConfig>
 }
