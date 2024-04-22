@@ -9,6 +9,7 @@ import { S } from '@tauri-apps/api/cli-373e13ed'
 const ControlContainer = styled.div`
   display: flex;
   justify-content: center;
+  gap: 10px;
 `
 
 const ContentContainer = styled.div`

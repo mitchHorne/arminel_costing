@@ -23,6 +23,7 @@ interface WoodTypes {
 
 const ContentContainer = styled.div<Props>`
   display: flex;
+  gap: 10px;
 
   ${props =>
     props.column
