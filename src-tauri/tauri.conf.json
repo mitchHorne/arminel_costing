@@ -33,7 +33,7 @@
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "com.tauri.dev",
+      "identifier": "arminel-box-costing",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",
@@ -49,9 +49,9 @@
       {
         "fullscreen": false,
         "resizable": true,
-        "title": "arminel",
-        "width": 800,
-        "height": 600
+        "title": "Arminel",
+        "width": 1200,
+        "height": 800
       }
     ]
   }
