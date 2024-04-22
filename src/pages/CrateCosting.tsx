@@ -124,9 +124,6 @@ export const CrateCosting = (): JSX.Element => {
   const [bottomSlatSizes, setBottomSlatSizes] = useState('')
   const [stepSixError, setStepSixError] = useState('')
 
-  const [sideSlatSize, setSideSlatSize] = useState('')
-  const [stepSevenError, setStepSevenError] = useState('')
-
   const chooseCostingType = (choice: string) => {
     setCostingType(choice)
     setStep(1)
@@ -227,7 +224,6 @@ export const CrateCosting = (): JSX.Element => {
     } else if (part === 'bearerSize') setBearerSize(value)
     else if (part === 'bottomSlatSizes') {
       setBottomSlatSizes(value)
-      setSideSlatSize(value)
     }
 
     setStepSixError('')
@@ -314,6 +310,8 @@ export const CrateCosting = (): JSX.Element => {
           bearerWoodType={bearerWoodType}
           setBearerWoodType={setBearerWoodType}
           woodType={woodType}
+          forkliftOnly={forkliftOnly}
+          forExport={forExport}
         />
       )}
 
@@ -337,13 +335,6 @@ export const CrateCosting = (): JSX.Element => {
             bearerWoodType
           }}
         />
-        // <CrateSideSection
-        //   sideSlatSize={sideSlatSize}
-        //   stepSevenError={stepSevenError}
-        //   setCrateSideValues={setSideSlatSize}
-        //   finaliseCrateSide={finaliseCrateSide}
-        // />
-        // <
       )}
     </div>
   )

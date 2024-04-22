@@ -2,10 +2,12 @@ import { useState } from 'react'
 import { lengths } from '../../constants/sizes'
 import { Prices } from '../../constants/prices'
 import {
-  DisplayContainer,
-  GridCard,
+  Arrow,
   InputContainer,
   InputRow,
+  StatsContainer,
+  StatsContentContainer,
+  StatsRowHeader,
   StyledInput
 } from './InputFormComponents'
 import { Button } from '../Button'
@@ -168,6 +170,8 @@ export default ({ props }: { props: PropsStructure }) => {
   const {
     bearerSize,
     bottomSlatSizes,
+    forkliftOnly,
+    forExport,
     inContainer,
     innerDimensionsHeight,
     innerDimensionsLength,
@@ -460,6 +464,32 @@ export default ({ props }: { props: PropsStructure }) => {
     Math.round(Number(totalCostPerItem) * margin * 100) / 100
   ).toFixed(2)
 
+  const [itemCostInfo, setItemCostInfo] = useState<boolean>(false)
+  const [totalCostInfo, setTotalCostInfo] = useState<boolean>(false)
+  const [baseInfo, setBaseInfo] = useState<boolean>(false)
+  const [bottomInfo, setBottomInfo] = useState<boolean>(false)
+  const [sideInfo, setSideInfo] = useState<boolean>(false)
+  const [endInfo, setEndInfo] = useState<boolean>(false)
+  const [lidInfo, setLidInfo] = useState<boolean>(false)
+  const [cubicInfo, setCubicInfo] = useState<boolean>(false)
+  const [costsInfo, setCostsInfo] = useState<boolean>(false)
+
+  const closeContainer = (func: Function) => func(false)
+
+  const openInfoContainer = (func: Function) => {
+    if (itemCostInfo) setItemCostInfo(false)
+    if (totalCostInfo) setTotalCostInfo(false)
+    if (baseInfo) setBaseInfo(false)
+    if (bottomInfo) setBottomInfo(false)
+    if (sideInfo) setSideInfo(false)
+    if (endInfo) setEndInfo(false)
+    if (lidInfo) setLidInfo(false)
+    if (cubicInfo) setCubicInfo(false)
+    if (costsInfo) setCostsInfo(false)
+
+    func(true)
+  }
+
   return (
     <div>
       <h1>Cost Finalization</h1>
@@ -496,36 +526,48 @@ export default ({ props }: { props: PropsStructure }) => {
               />
             </InputRow>
           </InputContainer>
-          <DisplayContainer>
-            <GridCard>
+          <StatsContainer>
+            <StatsRowHeader
+              onClick={() => {
+                if (itemCostInfo) closeContainer(setItemCostInfo)
+                else openInfoContainer(setItemCostInfo)
+              }}
+            >
+              <h4>
+                <Arrow open={itemCostInfo} /> Item Cost
+              </h4>
+            </StatsRowHeader>
+            <StatsContentContainer height={250} open={itemCostInfo}>
               <h4>Total cost per item</h4>
               <p>R {totalCostPerItem}</p>
-            </GridCard>
-            <GridCard>
-              <h4>Total cost for labor per item</h4>
+              <h4>Material cost per item</h4>
+              <p>R {totalMaterialsCost.toFixed(2)}</p>
+              <h4>Labor cost per item</h4>
               <p>R {totalLaborCostPerItem}</p>
-            </GridCard>
-            <GridCard>
-              <h4>Total cost for nails per item</h4>
+              <h4>Nails cost per item</h4>
               <p>R {totalNailsCost}</p>
-            </GridCard>
-            <GridCard>
               <h4>Total cost per item plus margin: {profitMargin}%</h4>
               <p>R {totalCostPerItemPlusMargin}</p>
-            </GridCard>
-            <GridCard>
               <h4>Total Profit per item: {profitMargin}%</h4>
               <p>R {profit}</p>
-            </GridCard>
-            <GridCard>
+            </StatsContentContainer>
+            <StatsRowHeader
+              onClick={() => {
+                if (totalCostInfo) closeContainer(setTotalCostInfo)
+                else openInfoContainer(setTotalCostInfo)
+              }}
+            >
+              <h4>
+                <Arrow open={totalCostInfo} /> Total Costs
+              </h4>
+            </StatsRowHeader>
+            <StatsContentContainer height={100} open={totalCostInfo}>
               <h4>Total cost for Labor</h4>
               <p>R {totalLaborCost}</p>
-            </GridCard>
-            <GridCard>
               <h4>Total cost for {numberToMake} boxes</h4>
               <p>R {totalCost}</p>
-            </GridCard>
-          </DisplayContainer>
+            </StatsContentContainer>
+          </StatsContainer>
           <InputContainer>
             <Button onClick={() => setShowDetails(true)}>Show Details</Button>
           </InputContainer>
@@ -534,241 +576,221 @@ export default ({ props }: { props: PropsStructure }) => {
 
       {showDetails && (
         <>
-          <DisplayContainer columns>
-            <GridCard>
-              <h4>Shipped in a container</h4>
+          <StatsContainer>
+            <StatsRowHeader
+              onClick={() => {
+                if (baseInfo) closeContainer(setBaseInfo)
+                else openInfoContainer(setBaseInfo)
+              }}
+            >
+              <h4>
+                <Arrow open={baseInfo} /> General Information
+              </h4>
+            </StatsRowHeader>
+            <StatsContentContainer height={200} open={baseInfo}>
+              <h4>For Export</h4>
+              <p>{forExport ? 'True' : 'False'}</p>
+              <h4>Shipped in a container?</h4>
               <p>{inContainer ? 'Yes' : 'No'}</p>
-            </GridCard>
-            <GridCard>
+              <h4>Forklifts only or forklift and trolley</h4>
+              <p>{forkliftOnly ? 'Forklift' : 'Forklift and Trolley'}</p>
               <h4>Inner Dimensions Length x Width x Height (mm)</h4>
               <p>
                 {innerDimensionsLength} X {innerDimensionsWidth} X{'   '}
                 {innerDimensionsHeight}
               </p>
-            </GridCard>
-            <GridCard>
+              <h4>Wood type for the Crate</h4>
+              <p>Kiln Dry</p>
+            </StatsContentContainer>
+            <StatsRowHeader
+              onClick={() => {
+                if (bottomInfo) closeContainer(setBottomInfo)
+                else openInfoContainer(setBottomInfo)
+              }}
+            >
+              <h4>
+                <Arrow open={bottomInfo} /> Crate Bottom Information
+              </h4>
+            </StatsRowHeader>
+            <StatsContentContainer height={300} open={bottomInfo}>
               <h4>Wood for Bearers</h4>
               <p>{bearerWoodType === 'kilnDry' ? 'Kiln Dry' : 'Wet Offsaw'}</p>
-            </GridCard>
-            <GridCard>
               <h4>Number of Bearers</h4>
               <p>{numberOfBearers}</p>
-            </GridCard>
-            <GridCard>
               <h4>Bearer Size (mm)</h4>
               <p>{bearerSize}</p>
-            </GridCard>
-            <GridCard>
-              <h4>Wood for rest of Crate</h4>
-              <p>Kiln Dry</p>
-            </GridCard>
-            <GridCard>
               <h4>Length of Bearers (mm)</h4>
               <p>{bearerLength}</p>
-            </GridCard>
-            <GridCard>
               <h4>Bottom Slat Size (mm)</h4>
               <p>
                 {bottomSlatThickness}X{bottomSlatWidth}
               </p>
-            </GridCard>
-            <GridCard>
               <h4>Bottom Slat Length (mm)</h4>
               <p>{bottomSlatLength}</p>
-            </GridCard>
-            <GridCard>
               <h4>Number of Bottom Slats</h4>
               <p>{bottomSlatQuantity}</p>
-            </GridCard>
-            <GridCard>
               <h4>Number of Bottom Nails</h4>
               <p>{bottomNails}</p>
-            </GridCard>
-            <GridCard>
+            </StatsContentContainer>
+            <StatsRowHeader
+              onClick={() => {
+                if (sideInfo) closeContainer(setSideInfo)
+                else openInfoContainer(setSideInfo)
+              }}
+            >
+              <h4>
+                <Arrow open={sideInfo} /> Crate Side Information
+              </h4>
+            </StatsRowHeader>
+            <StatsContentContainer height={280} open={sideInfo}>
               <h4>Side Slat Size (mm)</h4>
               <p>
                 {sideSlatThickness}x{sideSlatWidth}
               </p>
-            </GridCard>
-            <GridCard>
               <h4>Side Slat Length (mm)</h4>
               <p>{sideSlatLength}</p>
-            </GridCard>
-            <GridCard>
               <h4>Number of Side slats</h4>
               <p>{sideSlatQuantity}</p>
-            </GridCard>
-            <GridCard>
               <h4>Side Cleat Size (mm)</h4>
               <p>
                 {sideCleatThickness}x{sideCleatWidth}
               </p>
-            </GridCard>
-            <GridCard>
               <h4>Side Cleat Length (mm)</h4>
               <p>{sideCleatLength}</p>
-            </GridCard>
-            <GridCard>
               <h4>Number of Side Cleats</h4>
               <p>{sideCleatQuantity}</p>
-            </GridCard>
-            <GridCard>
               <h4>Number of Side Nails</h4>
               <p>{sideNails}</p>
-            </GridCard>
-            <GridCard>
+            </StatsContentContainer>
+            <StatsRowHeader
+              onClick={() => {
+                if (endInfo) closeContainer(setEndInfo)
+                else openInfoContainer(setEndInfo)
+              }}
+            >
+              <h4>
+                <Arrow open={endInfo} /> Crate Ends Information
+              </h4>
+            </StatsRowHeader>
+            <StatsContentContainer height={300} open={endInfo}>
               <h4>End Slat Size (mm)</h4>
               <p>
                 {endSlatThickness}x{endSlatWidth}
               </p>
-            </GridCard>
-            <GridCard>
               <h4>End Slat Length (mm)</h4>
               <p>{endSlatLength}</p>
-            </GridCard>
-            <GridCard>
               <h4>Number of End Slats</h4>
               <p>{endSlatQuantity}</p>
-            </GridCard>
-            <GridCard>
               <h4>End Cleat Size (mm)</h4>
               <p>
                 {endCleatThickness}x{endCleatWidth}
               </p>
-            </GridCard>
-            <GridCard>
               <h4>End Cleat Horizontal Length (mm)</h4>
               <p>{endCleatLengthHorizontal}</p>
-            </GridCard>
-            <GridCard>
               <h4>End Cleat Vertical Length (mm)</h4>
               <p>{endCleatLengthVertical}</p>
-            </GridCard>
-            <GridCard>
               <h4>Number of End Cleats</h4>
               <p>{Number(endCleatQuantity) * 2}</p>
-            </GridCard>
-            <GridCard>
               <h4>Number of End Nails</h4>
               <p>{endNails}</p>
-            </GridCard>
-            <GridCard>
+            </StatsContentContainer>
+            <StatsRowHeader
+              onClick={() => {
+                if (lidInfo) closeContainer(setLidInfo)
+                else openInfoContainer(setLidInfo)
+              }}
+            >
+              <h4>
+                <Arrow open={lidInfo} /> Crate Lid Information
+              </h4>
+            </StatsRowHeader>
+            <StatsContentContainer height={300} open={lidInfo}>
               <h4>Lid Slat Size (mm)</h4>
               <p>
                 {lidSlatThickness}x{lidSlatWidth}
               </p>
-            </GridCard>
-            <GridCard>
               <h4>Lid Slat Length (mm)</h4>
               <p>{lidSlatLength}</p>
-            </GridCard>
-            <GridCard>
               <h4>Number of Lid Slats</h4>
               <p>{lidSlatQuantity}</p>
-            </GridCard>
-            <GridCard>
               <h4>Lid Cleat Size (mm)</h4>
               <p>
                 {lidCleatThickness}x{lidCleatWidth}
               </p>
-            </GridCard>
-            <GridCard>
               <h4>Lid Cleat Length (mm)</h4>
               <p>{lidCleatLength}</p>
-            </GridCard>
-            <GridCard>
               <h4>Number of lid Cleats</h4>
               <p>{lidCleatQuantity}</p>
-            </GridCard>
-            <GridCard>
-              <h4>Number of Side Nails</h4>
+              <h4>Number of Lid Nails</h4>
               <p>{lidNails}</p>
-            </GridCard>
-            <GridCard>
+            </StatsContentContainer>
+            <StatsRowHeader
+              onClick={() => {
+                if (cubicInfo) closeContainer(setCubicInfo)
+                else openInfoContainer(setCubicInfo)
+              }}
+            >
+              <h4>
+                <Arrow open={cubicInfo} /> Cubic Meter Breakdowns
+              </h4>
+            </StatsRowHeader>
+            <StatsContentContainer height={400} open={cubicInfo}>
               <h4>Total cubic meters</h4>
-              <p>{totalCubicMeters}</p>
-            </GridCard>
-            <GridCard>
+              <p>{totalCubicMeters.toFixed(7)} m³</p>
               <h4>Bearer cubic meters</h4>
-              <p>{bearerCubicMeters}</p>
-            </GridCard>
-            <GridCard>
+              <p>{bearerCubicMeters.toFixed(7)} m³</p>
               <h4>Bottom slat cubic meters</h4>
-              <p>{bottomSlatCubicMeters}</p>
-            </GridCard>
-            <GridCard>
+              <p>{bottomSlatCubicMeters.toFixed(7)} m³</p>
               <h4>Sie slat cubic meters</h4>
-              <p>{sideSlatCubicMeters}</p>
-            </GridCard>
-            <GridCard>
+              <p>{sideSlatCubicMeters.toFixed(7)} m³</p>
               <h4>Side cleat cubic meters</h4>
-              <p>{sideCleatCubicMeters}</p>
-            </GridCard>
-            <GridCard>
+              <p>{sideCleatCubicMeters.toFixed(7)} m³</p>
               <h4>End slat cubic meters</h4>
-              <p>{endSlatCubicMeters}</p>
-            </GridCard>
-            <GridCard>
+              <p>{endSlatCubicMeters.toFixed(7)} m³</p>
               <h4>Horizontal end cleat cubic meters</h4>
-              <p>{horizontalEndCleatCubicMeters}</p>
-            </GridCard>
-            <GridCard>
+              <p>{horizontalEndCleatCubicMeters.toFixed(7)} m³</p>
               <h4>Vertical end cleat cubic meters</h4>
-              <p>{verticalEndCleatCubicMeters}</p>
-            </GridCard>
-            <GridCard>
+              <p>{verticalEndCleatCubicMeters.toFixed(7)} m³</p>
               <h4>Lid slat cubic meters</h4>
-              <p>{lidSlatCubicMeters}</p>
-            </GridCard>
-            <GridCard>
+              <p>{lidSlatCubicMeters.toFixed(7)} m³</p>
               <h4>Lid Cleat Cubic meters</h4>
-              <p>{lidCleatCubicMeters}</p>
-            </GridCard>
-            <GridCard>
+              <p>{lidCleatCubicMeters.toFixed(7)} m³</p>
+            </StatsContentContainer>
+            <StatsRowHeader
+              onClick={() => {
+                if (costsInfo) closeContainer(setCostsInfo)
+                else openInfoContainer(setCostsInfo)
+              }}
+            >
+              <h4>
+                <Arrow open={costsInfo} /> Cost Breakdowns
+              </h4>
+            </StatsRowHeader>
+            <StatsContentContainer height={400} open={costsInfo}>
               <h4>Labor cost per cubic meter</h4>
               <p>R {String(prices.labor)}</p>
-            </GridCard>
-            <GridCard>
               <h4>Total material cost</h4>
-              <p>R {String(totalMaterialsCost)}</p>
-            </GridCard>
-            <GridCard>
+              <p>R {totalMaterialsCost.toFixed(2)}</p>
               <h4>Total Bearer cost</h4>
-              <p>R {bearerTotalCost}</p>
-            </GridCard>
-            <GridCard>
+              <p>R {bearerTotalCost.toFixed(2)}</p>
               <h4>Total bottom slat cost</h4>
-              <p>R {bottomSlatTotalCost}</p>
-            </GridCard>
-            <GridCard>
+              <p>R {bottomSlatTotalCost.toFixed(2)}</p>
               <h4>Total side slat cost</h4>
-              <p>R {sideSlatTotalCost}</p>
-            </GridCard>
-            <GridCard>
+              <p>R {sideSlatTotalCost.toFixed(2)}</p>
               <h4>Total Side cleat cost</h4>
-              <p>R {sideCleatTotalCost}</p>
-            </GridCard>
-            <GridCard>
+              <p>R {sideCleatTotalCost.toFixed(2)}</p>
               <h4>Total end slat cost</h4>
-              <p>R {endSlatTotalCost}</p>
-            </GridCard>
-            <GridCard>
+              <p>R {endSlatTotalCost.toFixed(2)}</p>
               <h4>Total horizontal end cleat cost</h4>
-              <p>R {horizontalEndCleatTotalCost}</p>
-            </GridCard>
-            <GridCard>
+              <p>R {horizontalEndCleatTotalCost.toFixed(2)}</p>
               <h4>Total End cleat cost</h4>
-              <p>R {verticalEndCleatTotalCost}</p>
-            </GridCard>
-            <GridCard>
+              <p>R {verticalEndCleatTotalCost.toFixed(2)}</p>
               <h4>Total Lid Slat cost</h4>
-              <p>R {lidSlatTotalCost}</p>
-            </GridCard>
-            <GridCard>
+              <p>R {lidSlatTotalCost.toFixed(2)}</p>
               <h4>Total Lid cleat cost</h4>
-              <p>R {lidCleatTotalCost}</p>
-            </GridCard>
-          </DisplayContainer>
+              <p>R {lidCleatTotalCost.toFixed(2)}</p>
+            </StatsContentContainer>
+          </StatsContainer>
           <InputContainer>
             <Button onClick={() => setShowDetails(false)}>Show Details</Button>
           </InputContainer>

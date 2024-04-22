@@ -71,55 +71,65 @@ export const StyledDropdown = styled(Dropdown)`
   }
 `
 
-interface IDisplayContainer {
-  columns?: boolean
-}
+export const StatsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+`
 
-export const DisplayContainer = styled.div<IDisplayContainer>`
-  align-items: stretch;
-  display: grid;
-  gap: 2rem;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: auto;
-  overflow: hidden;
-  margin-bottom: 1rem;
-  margin-top: 1rem;
-  margin-left: ${props => (props.columns ? '5vw' : '25vw')};
-  width: ${props => (props.columns ? '90vw' : '50vw')};
+export const StatsRowHeader = styled.div`
+  background-color: #eee;
+  border: 1px solid #777;
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-start;
+  padding: 0 25px;
 
-  h4,
-  p {
+  h4 {
     margin: 0;
-    padding: 0;
-    width: 100%;
+    padding: 10px 0;
   }
 `
 
-export const GridCard = styled.div`
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  justify-content: space-between;
+interface IArrow {
+  open: boolean
+}
 
-  :before,
-  :after {
-    content: '';
-    background-color: #333;
-    position: absolute;
+export const Arrow = styled.div<IArrow>`
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  margin-right: 10px;
+  padding: 3px;
+  transform: ${props => (props.open ? 'rotate(45deg)' : 'rotate(-45deg)')};
+  -webkit-transform: ${props =>
+    props.open ? 'rotate(45deg)' : 'rotate(-45deg)'};
+
+  transition: all 0.3s;
+`
+
+interface IStatsContent {
+  height: number
+  open: boolean
+}
+
+export const StatsContentContainer = styled.div<IStatsContent>`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  max-height: ${props => (props.open ? `${props.height}px` : '0px')};
+  overflow: hidden;
+  transition: max-height 0.3s ease-in;
+
+  h4,
+  p {
+    border-bottom: 1px solid #777;
+    border-left: 1px solid #777;
+    margin: 0;
+    padding: 5px 5px;
+    text-align: left;
   }
 
-  :after {
-    height: 1px;
-    left: 0;
-    top: -1rem;
-    width: 100vw;
-  }
-
-  :before {
-    bottom: -1rem;
-    height: 1000vh;
-    left: -1rem;
-    width: 1px;
+  p {
+    border-right: 1px solid #777;
   }
 `

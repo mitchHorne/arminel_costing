@@ -4,9 +4,15 @@ import { woodSizes } from '../../constants'
 
 function filterBearerSizes (
   woodSizes: { value: string; label: string }[],
-  woodType: 'kilnDry' | 'wetOffSaw'
+  woodType: 'kilnDry' | 'wetOffSaw',
+  forkliftOnly: boolean
 ): { value: string; label: string }[] {
   if (woodType === 'wetOffSaw') return woodSizes
+
+  const allowedSizesForklift: Array<String> = ['38x114', '76x228']
+  if (!forkliftOnly)
+    return woodSizes.filter(size => allowedSizesForklift.includes(size.value))
+
   const allowedSizes: Array<String> = ['38x76', '38x114', '50x76', '76x228']
   return woodSizes.filter(size => allowedSizes.includes(size.value))
 }
@@ -20,7 +26,9 @@ export default ({
   finaliseCrateBase,
   bearerWoodType,
   setBearerWoodType,
-  woodType
+  woodType,
+  forkliftOnly,
+  forExport
 }: {
   numberOfBearers: Number
   bearerSize: String
@@ -31,6 +39,8 @@ export default ({
   bearerWoodType: 'kilnDry' | 'wetOffSaw'
   setBearerWoodType: Function
   woodType: 'Kiln Dry' | 'Wet Offsaw'
+  forkliftOnly: boolean
+  forExport: boolean
 }) => {
   const woodTypeParam: 'kilnDry' | 'wetOffSaw' =
     woodType === 'Kiln Dry' ? 'kilnDry' : 'wetOffSaw'
@@ -53,27 +63,30 @@ export default ({
             value={String(numberOfBearers)}
           />
         </InputRow>
-        <InputRow>
-          <h4>Type of Wood for Bearers</h4>
-          <Dropdown
-            options={[
-              { value: 'kilnDry', label: 'Kiln Dry' },
-              { value: 'wetOffSaw', label: 'Wet Off Saw' }
-            ]}
-            onChange={(e: { value: String }) => {
-              const value: String = e.value
-              setBearerWoodType(value)
-            }}
-            placeholder='Choose type of wood for bearers'
-            value={bearerWoodType}
-          />
-        </InputRow>
+        {!forExport && (
+          <InputRow>
+            <h4>Type of Wood for Bearers</h4>
+            <Dropdown
+              options={[
+                { value: 'kilnDry', label: 'Kiln Dry' },
+                { value: 'wetOffSaw', label: 'Wet Off Saw' }
+              ]}
+              onChange={(e: { value: String }) => {
+                const value: String = e.value
+                setBearerWoodType(value)
+              }}
+              placeholder='Choose type of wood for bearers'
+              value={bearerWoodType}
+            />
+          </InputRow>
+        )}
         <InputRow>
           <h4>Width and thickness of bearers</h4>
           <Dropdown
             options={filterBearerSizes(
               woodSizes[bearerWoodType],
-              bearerWoodType
+              bearerWoodType,
+              forkliftOnly
             )}
             onChange={(e: { value: String }) => {
               const value: String = e.value
