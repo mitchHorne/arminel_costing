@@ -170,10 +170,10 @@ export const Config = (): JSX.Element => {
   }
 
   const changeConfigNails = (value: String): void => {
-    const numberVal = Number(value)
-    if (Number.isNaN(numberVal)) return
+    const testRegex = /^[0-9]*\.?[0-9]*$/
+    if (!value.match(testRegex)) return
 
-    const newData = { ...configData, nails: numberVal }
+    const newData = { ...configData, nails: value }
 
     setConfigData(newData)
   }
