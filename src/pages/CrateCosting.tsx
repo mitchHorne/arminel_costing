@@ -208,8 +208,9 @@ export const CrateCosting = (): JSX.Element => {
 
   const forkliftOnlyChoices = ['Forklift Only', 'Forklift and Trolley']
 
-  const chooseForkliftOnly = (forkliftOnly: boolean) => {
-    setForkliftOnly(forkliftOnly)
+  const chooseForkliftOnly = (forkliftOnly: string) => {
+    const value = forkliftOnly === 'Forklift Only' ? true : false
+    setForkliftOnly(value)
     setStep(6)
   }
 

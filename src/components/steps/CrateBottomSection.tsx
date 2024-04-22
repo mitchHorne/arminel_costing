@@ -7,9 +7,19 @@ function filterBearerSizes (
   woodType: 'kilnDry' | 'wetOffSaw',
   forkliftOnly: boolean
 ): { value: string; label: string }[] {
-  if (woodType === 'wetOffSaw') return woodSizes
+  const allowedSizesForklift: Array<String> = [
+    '38x114',
+    '76x102',
+    '76x228',
+    '102x102'
+  ]
 
-  const allowedSizesForklift: Array<String> = ['38x114', '76x228']
+  if (woodType === 'wetOffSaw') {
+    if (!forkliftOnly)
+      return woodSizes.filter(size => allowedSizesForklift.includes(size.value))
+    return woodSizes
+  }
+
   if (!forkliftOnly)
     return woodSizes.filter(size => allowedSizesForklift.includes(size.value))
 

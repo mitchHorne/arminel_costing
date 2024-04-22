@@ -200,8 +200,6 @@ export const Config = (): JSX.Element => {
     }
   }
 
-  console.log(configData)
-
   return (
     <div>
       {configuring ? (

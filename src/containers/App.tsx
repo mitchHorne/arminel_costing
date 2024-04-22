@@ -47,10 +47,7 @@ function App (): JSX.Element {
       const { data: fileData, configured } = await createBaseFolder()
       dispatch(setPrices(fileData))
 
-      if (!configured) {
-        console.log('Not configured - proceeding to configuration page')
-        setConfigured(false)
-      }
+      if (!configured) setConfigured(false)
     }
 
     getData().catch(e => console.error(e))
